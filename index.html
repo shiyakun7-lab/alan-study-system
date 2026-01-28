@@ -215,6 +215,17 @@
             color: #333;
         }
 
+        .category-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
         .card-content {
             color: #666;
             margin-bottom: 10px;
@@ -693,6 +704,211 @@
             color: white;
         }
 
+        /* 城市卡片 - 已访问状态 */
+        .city-card.visited {
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+
+        /* 去过标记按钮 */
+        .visit-toggle-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .visit-toggle-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .visit-toggle-btn.visited {
+            background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+            color: white;
+        }
+
+        /* 城市卡片按钮容器 */
+        .city-card-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        /* 查看详情按钮 */
+        .city-detail-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .city-detail-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 城市详情弹窗 */
+        .city-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .city-detail-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .city-detail-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.1);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 1;
+        }
+
+        .city-detail-close:hover {
+            background: rgba(0,0,0,0.2);
+            transform: rotate(90deg);
+        }
+
+        .city-detail-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+            position: relative;
+        }
+
+        .city-detail-icon {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .city-detail-header h2 {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .city-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin: 5px 2px;
+            font-weight: bold;
+        }
+
+        .city-badge.unlocked-badge {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .city-badge.visited-badge {
+            background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+        }
+
+        .city-badge.not-visited-badge {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .city-badge.locked-badge {
+            background: rgba(0,0,0,0.3);
+        }
+
+        .city-detail-body {
+            padding: 25px;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .city-detail-footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .visit-action-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .visit-action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .visit-action-btn.visited {
+            background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+            color: #666;
+        }
+
+        .unlock-hint-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: default;
+            background: linear-gradient(135deg, #ffd54f 0%, #ff9800 100%);
+            color: white;
+            font-weight: bold;
+        }
+
         .travel-stats {
             display: flex;
             justify-content: space-around;
@@ -982,6 +1198,115 @@
             color: white;
         }
 
+        /* 家务劳动样式 */
+        .chores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .chore-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .chore-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .chore-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .chore-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .chore-points {
+            color: #f5576c;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .chore-btn {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .chore-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(67, 233, 123, 0.4);
+        }
+
+        .chore-btn:active {
+            transform: scale(0.95);
+        }
+
+        .chore-records-section {
+            padding: 0 20px 20px;
+        }
+
+        .chore-records {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chore-record-item {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #43e97b;
+        }
+
+        .chore-record-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chore-record-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .chore-record-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .chore-record-points {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
         .sports-overview {
             background: white;
             border-radius: 15px;
@@ -1037,6 +1362,7 @@
             <button class="tab-btn" onclick="switchTab('plan')">📅 学习计划</button>
             <button class="tab-btn" onclick="switchTab('test')">📋 学习测试</button>
             <button class="tab-btn" onclick="switchTab('sports')">🏸 运动提升</button>
+            <button class="tab-btn" onclick="switchTab('chores')">🧹 家务劳动</button>
             <button class="tab-btn" onclick="switchTab('rewards')">🎁 积分兑换</button>
             <button class="tab-btn" onclick="switchTab('world')">🌏 探索世界</button>
             <button class="tab-btn" onclick="switchTab('training')">🎯 注意力训练</button>
@@ -1152,8 +1478,17 @@
         <div id="reading" class="tab-content">
             <h2 class="section-title">阅读管理</h2>
             <div class="input-group">
-                <input type="text" id="bookTitle" placeholder="书名">
-                <input type="text" id="bookAuthor" placeholder="作者">
+                <input type="text" id="bookTitle" placeholder="书名/报纸名称">
+                <input type="text" id="bookAuthor" placeholder="作者（可选）">
+                <select id="bookCategory">
+                    <option value="图书">📖 图书</option>
+                    <option value="小说">📕 小说</option>
+                    <option value="报纸">📰 报纸</option>
+                    <option value="杂志">📚 杂志</option>
+                    <option value="漫画">🎨 漫画</option>
+                    <option value="科普">🔬 科普</option>
+                    <option value="其他">📄 其他</option>
+                </select>
                 <input type="number" id="bookPages" placeholder="总页数" min="1">
                 <input type="number" id="bookWords" placeholder="总字数（可选）" min="1">
                 <button class="btn btn-primary" onclick="addBook()">添加到书单</button>
@@ -1288,41 +1623,41 @@
                         </div>
                     </div>
 
-                    <!-- 网球卡片 -->
+                    <!-- 自由户外活动卡片 -->
                     <div class="sport-card">
                         <div class="sport-header">
-                            <div class="sport-icon-large">🎾</div>
-                            <div class="sport-title">网球</div>
+                            <div class="sport-icon-large">🌳</div>
+                            <div class="sport-title">自由户外活动</div>
                         </div>
 
                         <div class="sport-stats">
                             <div class="sport-stat-item">
-                                <div class="sport-stat-value" id="tennisCount">0</div>
-                                <div class="sport-stat-label">训练次数</div>
+                                <div class="sport-stat-value" id="outdoorCount">0</div>
+                                <div class="sport-stat-label">活动次数</div>
                             </div>
                             <div class="sport-stat-item">
-                                <div class="sport-stat-value" id="tennisHours">0</div>
+                                <div class="sport-stat-value" id="outdoorHours">0</div>
                                 <div class="sport-stat-label">总时长(小时)</div>
                             </div>
                         </div>
 
                         <div class="training-form">
-                            <input type="number" id="tennisDuration" placeholder="训练时长（分钟）" min="1">
-                            <select id="tennisType">
-                                <option value="基础练习">基础练习</option>
-                                <option value="正手训练">正手训练</option>
-                                <option value="反手训练">反手训练</option>
-                                <option value="发球训练">发球训练</option>
-                                <option value="对打练习">对打练习</option>
-                                <option value="比赛">比赛</option>
+                            <input type="number" id="outdoorDuration" placeholder="活动时长（分钟）" min="1">
+                            <select id="outdoorType">
+                                <option value="🚴 骑自行车">�� 骑自行车</option>
+                                <option value="🏀 打篮球">🏀 打篮球</option>
+                                <option value="🏊 游泳">🏊 游泳</option>
+                                <option value="🏃 跑步">🏃 跑步</option>
+                                <option value="自定义">自定义活动</option>
                             </select>
-                            <textarea id="tennisNote" placeholder="训练笔记（可选）" rows="2"></textarea>
-                            <button class="btn btn-primary" onclick="addTraining('tennis')">记录训练</button>
+                            <input type="text" id="outdoorCustom" placeholder="自定义活动名称（可选）" style="display: none;">
+                            <textarea id="outdoorNote" placeholder="活动笔记（可选）" rows="2"></textarea>
+                            <button class="btn btn-primary" onclick="addTraining('outdoor')">记录活动</button>
                         </div>
 
                         <div class="training-records">
-                            <h4 style="margin: 15px 0 10px; color: #333;">最近训练</h4>
-                            <div id="tennisRecords"></div>
+                            <h4 style="margin: 15px 0 10px; color: #333;">最近活动</h4>
+                            <div id="outdoorRecords"></div>
                         </div>
                     </div>
                 </div>
@@ -1356,6 +1691,143 @@
                         • 训练90分钟以上：+20积分<br>
                         • 坚持运动，强健体魄，获得更多积分！
                     </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 家务劳动页面 -->
+        <div id="chores" class="tab-content">
+            <div class="sports-container">
+                <h2 style="text-align: center; font-size: 32px; font-weight: bold; color: white; margin-bottom: 10px;">
+                    🧹 家务劳动
+                </h2>
+                <p style="text-align: center; font-size: 18px; color: white; opacity: 0.9; margin-bottom: 30px;">
+                    劳动最光荣！完成家务获得积分奖励，培养好习惯！
+                </p>
+
+                <!-- 家务统计 -->
+                <div class="travel-stats">
+                    <div class="travel-stat">
+                        <div class="travel-stat-number" id="choreCount">0</div>
+                        <div class="travel-stat-label">完成次数</div>
+                    </div>
+                    <div class="travel-stat">
+                        <div class="travel-stat-number" id="chorePoints">0</div>
+                        <div class="travel-stat-label">获得积分</div>
+                    </div>
+                </div>
+
+                <!-- 家务任务卡片 -->
+                <div class="chores-grid">
+                    <!-- 扫地 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🧹</div>
+                        <div class="chore-name">扫地</div>
+                        <div class="chore-points">+5 积分</div>
+                        <button class="chore-btn" onclick="completeChore('扫地', 5)">完成</button>
+                    </div>
+
+                    <!-- 拖地 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🧽</div>
+                        <div class="chore-name">拖地</div>
+                        <div class="chore-points">+8 积分</div>
+                        <button class="chore-btn" onclick="completeChore('拖地', 8)">完成</button>
+                    </div>
+
+                    <!-- 洗碗 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🍽️</div>
+                        <div class="chore-name">洗碗</div>
+                        <div class="chore-points">+5 积分</div>
+                        <button class="chore-btn" onclick="completeChore('洗碗', 5)">完成</button>
+                    </div>
+
+                    <!-- 擦桌子 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🪑</div>
+                        <div class="chore-name">擦桌子</div>
+                        <div class="chore-points">+3 积分</div>
+                        <button class="chore-btn" onclick="completeChore('擦桌子', 3)">完成</button>
+                    </div>
+
+                    <!-- 倒垃圾 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🗑️</div>
+                        <div class="chore-name">倒垃圾</div>
+                        <div class="chore-points">+3 积分</div>
+                        <button class="chore-btn" onclick="completeChore('倒垃圾', 3)">完成</button>
+                    </div>
+
+                    <!-- 整理房间 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🛏️</div>
+                        <div class="chore-name">整理房间</div>
+                        <div class="chore-points">+10 积分</div>
+                        <button class="chore-btn" onclick="completeChore('整理房间', 10)">完成</button>
+                    </div>
+
+                    <!-- 洗衣服 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">👕</div>
+                        <div class="chore-name">洗衣服</div>
+                        <div class="chore-points">+8 积分</div>
+                        <button class="chore-btn" onclick="completeChore('洗衣服', 8)">完成</button>
+                    </div>
+
+                    <!-- 晾衣服 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🌞</div>
+                        <div class="chore-name">晾衣服</div>
+                        <div class="chore-points">+3 积分</div>
+                        <button class="chore-btn" onclick="completeChore('晾衣服', 3)">完成</button>
+                    </div>
+
+                    <!-- 叠衣服 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">👔</div>
+                        <div class="chore-name">叠衣服</div>
+                        <div class="chore-points">+5 积分</div>
+                        <button class="chore-btn" onclick="completeChore('叠衣服', 5)">完成</button>
+                    </div>
+
+                    <!-- 浇花 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🌻</div>
+                        <div class="chore-name">浇花</div>
+                        <div class="chore-points">+2 积分</div>
+                        <button class="chore-btn" onclick="completeChore('浇花', 2)">完成</button>
+                    </div>
+
+                    <!-- 擦窗户 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🪟</div>
+                        <div class="chore-name">擦窗户</div>
+                        <div class="chore-points">+8 积分</div>
+                        <button class="chore-btn" onclick="completeChore('擦窗户', 8)">完成</button>
+                    </div>
+
+                    <!-- 做饭 -->
+                    <div class="chore-card">
+                        <div class="chore-icon">🍳</div>
+                        <div class="chore-name">帮忙做饭</div>
+                        <div class="chore-points">+15 积分</div>
+                        <button class="chore-btn" onclick="completeChore('帮忙做饭', 15)">完成</button>
+                    </div>
+
+                    <!-- 大扫除 -->
+                    <div class="chore-card" style="background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);">
+                        <div class="chore-icon">🧹</div>
+                        <div class="chore-name">大扫除</div>
+                        <div class="chore-points">+20 积分</div>
+                        <button class="chore-btn" onclick="completeChore('大扫除', 20)">完成</button>
+                    </div>
+                </div>
+
+                <!-- 家务记录 -->
+                <div class="chore-records-section">
+                    <h3 style="margin: 30px 0 15px; color: white; text-align: center;">📋 最近完成的家务</h3>
+                    <div id="choreRecords" class="chore-records"></div>
                 </div>
             </div>
         </div>
@@ -1526,19 +1998,32 @@
             schedule: [],
             travel: {
                 unlockedCities: [],
+                visitedCities: [],
                 cities: [
-                    { id: 1, name: '北京', icon: '🏛️', desc: '故宫、长城、天安门' },
-                    { id: 2, name: '上海', icon: '🏙️', desc: '东方明珠、外滩、迪士尼' },
-                    { id: 3, name: '西安', icon: '🗿', desc: '兵马俑、古城墙、大雁塔' },
-                    { id: 4, name: '成都', icon: '🐼', desc: '大熊猫基地、宽窄巷子' },
-                    { id: 5, name: '杭州', icon: '🌊', desc: '西湖、灵隐寺、宋城' },
-                    { id: 6, name: '桂林', icon: '⛰️', desc: '漓江、象鼻山、阳朔' },
-                    { id: 7, name: '三亚', icon: '🏖️', desc: '天涯海角、亚龙湾、蜈支洲岛' },
-                    { id: 8, name: '丽江', icon: '🏔️', desc: '古城、玉龙雪山、泸沽湖' },
-                    { id: 9, name: '厦门', icon: '🌴', desc: '鼓浪屿、南普陀寺、环岛路' },
-                    { id: 10, name: '青岛', icon: '🍺', desc: '栈桥、八大关、崂山' },
-                    { id: 11, name: '苏州', icon: '🏯', desc: '园林、周庄、寒山寺' },
-                    { id: 12, name: '张家界', icon: '🌲', desc: '天门山、玻璃栈道、黄龙洞' }
+                    { id: 1, name: '北京', icon: '🏛️', desc: '故宫、长城、天安门',
+                      details: '🏛️ **北京** - 中国首都\n\n📍 必游景点：\n• 故宫博物院 - 明清两代皇家宫殿\n• 万里长城 - 世界七大奇迹之一\n• 天安门广场 - 世界上最大的城市广场\n• 颐和园 - 皇家园林园林艺术杰作\n• 天坛 - 明清皇帝祭天的场所\n\n🍜 特色美食：\n北京烤鸭、老北京炸酱面���豆汁焦圈、驴打滚\n\n📅 最佳旅游时间：\n春秋两季（4-5月、9-10月）气候宜人' },
+                    { id: 2, name: '上海', icon: '🏙️', desc: '东方明珠、外滩、迪士尼',
+                      details: '🏙️ **上海** - 魔都\n\n📍 必游景点：\n• 东方明珠塔 - 上海地标建筑\n• 外滩 - 万国建筑博览群\n• 上海迪士尼 - 中国首座迪士尼\n• 豫园 - 明代私家园林\n• 南京路步行街 - 中华商业第一街\n\n🍜 特色美食：\n小笼包、生煎包、排骨年糕、蟹壳黄\n\n📅 最佳旅游时间：\n春秋两季，避免梅雨季节' },
+                    { id: 3, name: '西安', icon: '🗿', desc: '兵马俑、古城墙、大雁塔',
+                      details: '🗿 **西安** - 十三朝古都\n\n📍 必游景点：\n• 秦始皇兵马俑 - 世界第八大奇迹\n• 西安古城墙 - 中国保存最完整的古城墙\n• 大雁塔 - 玄奘法师译经之地\n• 华清池 - 杨贵妃沐浴之地\n• 回民街 - 美食天堂\n\n🍜 特色美食：\n肉夹馍、羊肉泡馍、凉皮、biangbiang面\n\n📅 最佳旅游时间：\n春秋两季，4-5月和9-10月' },
+                    { id: 4, name: '成都', icon: '🐼', desc: '大熊猫基地、宽窄巷子',
+                      details: '🐼 **成都** - 天府之国\n\n📍 必游景点：\n• 大熊猫繁育基地 - 国宝之家\n• 宽窄巷子 - 清代古街道\n• 锦里 - 三国文化街区\n• 都江堰 - 古代水利工程奇迹\n• 青城山 - 道教发源地\n\n🍜 特色美食：\n火锅、串串香、麻婆豆腐、担担面、兔头\n\n📅 最佳旅游时间：\n全年皆宜，夏季稍热' },
+                    { id: 5, name: '杭州', icon: '🌊', desc: '西湖、灵隐寺、宋城',
+                      details: '🌊 **杭州** - 人间天堂\n\n📍 必游景点：\n• 西湖 - 淡妆浓抹总相宜\n• 灵隐寺 - 江南著名古刹\n• 雷峰塔 - 白娘子传说地\n• 宋城 - 给我一天还你千年\n• 千岛湖 - 天下第一秀水\n\n🍜 特色美食：\n西湖醋鱼、东坡肉、龙井虾仁、叫花鸡\n\n📅 最佳旅游时间：\n春秋两季，3-5月和9-11月' },
+                    { id: 6, name: '桂林', icon: '⛰️', desc: '漓江、象鼻山、阳朔',
+                      details: '⛰️ **桂林** - 山水甲天下\n\n📍 必游景点：\n• 漓江 - 人民币20元背景图\n• 象鼻山 - 桂林城徽\n• 阳朔西街 - 地球村\n• 龙脊梯田 - 大地雕塑\n• 芦笛岩 - 大自然艺术之宫\n\n🍜 特色美食：\n桂林米粉、啤酒鱼、荔浦芋头扣肉\n\n📅 最佳旅游时间：\n4-10月，雨季山水更美' },
+                    { id: 7, name: '三亚', icon: '🏖️', desc: '天涯海角、亚龙湾、蜈支洲岛',
+                      details: '🏖️ **三亚** - 东方夏威夷\n\n📍 必游景点：\n• 天涯海角 - 浪漫宣言地\n• 亚龙湾 - 天下第一湾\n• 蜈支洲岛 - 中国马尔代夫\n• 南山寺 - 108米海上观音\n• 亚特兰蒂斯 - 水上乐园\n\n🍜 特色美食：\n椰子鸡、海鲜大餐、清补凉、海南粉\n\n📅 最佳旅游时间：\n10月至次年3月，避寒胜地' },
+                    { id: 8, name: '丽江', icon: '🏔️', desc: '古城、玉龙雪山、泸沽湖',
+                      details: '🏔️ **丽江** - 艳遇之都\n\n📍 必游景点：\n• 丽江古城 - 世界文化遗产\n• 玉龙雪山 - 纳西族神山\n• 泸沽湖 - 女儿国\n• 蓝月谷 - 高原蓝宝石\n• 束河古镇 - 茶马古道重镇\n\n🍜 特色美食：\n腊排骨火锅、鸡豆凉粉、丽江粑粑、鲜花饼\n\n📅 最佳旅游时间：\n全年皆宜，春秋最佳' },
+                    { id: 9, name: '厦门', icon: '🌴', desc: '鼓浪屿、南普陀寺、环岛路',
+                      details: '🌴 **厦门** - 海上花园\n\n📍 必游景点：\n• 鼓浪屿 - 万国建筑博览\n• 南普陀寺 - 千年古刹\n• 环岛路 - 最美马拉松赛道\n• 曾厝垵 - 文艺小渔村\n• 厦门大学 - 中国最美大学\n\n🍜 特色美食：\n沙茶面、海蛎煎、土笋冻、花生汤\n\n📅 最佳旅游时间：\n春秋两季，避开台风季' },
+                    { id: 10, name: '青岛', icon: '🍺', desc: '栈桥、八大关、崂山',
+                      details: '🍺 **青岛** - 红瓦绿树碧海蓝天\n\n📍 必游景点：\n• 栈桥 - 青岛标志\n• 八大关 - 万国建筑博览会\n• 崂山 - 海上第一名山\n• 五四广场 - 城市客厅\n• 青岛啤酒博物馆 - 啤酒文化\n\n🍜 特色美食：\n青岛啤酒、海鲜大餐、烤鱿鱼、辣炒蛤蜊\n\n📅 最佳旅游时间：\n5-10月，8月有啤酒节' },
+                    { id: 11, name: '苏州', icon: '🏯', desc: '园林、周庄、寒山寺',
+                      details: '🏯 **苏州** - 东方威尼斯\n\n📍 必游景点：\n• 拙政园 - 中国四大名园之首\n• 狮子林 - 假山王国\n• 周庄古镇 - 中国第一水乡\n• 寒山寺 - 夜半钟声到客船\n• 虎丘 - 吴中第一名胜\n\n🍜 特色美食：\n松鼠桂鱼、太湖三白、苏式月饼、碧螺春茶\n\n📅 最佳旅游时间：\n春秋两季，4-5月和9-10月' },
+                    { id: 12, name: '张家界', icon: '🌲', desc: '天门山、玻璃栈道、黄龙洞',
+                      details: '🌲 **张家界** - 缩小版仙境\n\n📍 必游景点：\n• 天门山 - 世界最长索道\n• 玻璃栈道 - 悬崖上的心跳\n• 黄龙洞 - 地下明珠\n• 袁家界 - 阿凡达取景地\n• 金鞭溪 - 天下最美溪流\n\n🍜 特色美食：\n三下锅、葛根粉、土家腊肉、岩耳炖鸡\n\n📅 最佳旅游时间：\n春秋两季，9-11月最美' }
                 ]
             }
         };
@@ -1566,6 +2051,8 @@
             updateTestStats();
             renderSportsRecords();
             updateSportsStats();
+            renderChoreRecords();
+            updateChoreStats();
         }
 
         // 加载数据
@@ -1589,21 +2076,38 @@
                 if (!data.travel) {
                     data.travel = {
                         unlockedCities: [],
+                        visitedCities: [],
                         cities: [
-                            { id: 1, name: '北京', icon: '🏛️', desc: '故宫、长城、天安门' },
-                            { id: 2, name: '上海', icon: '🏙️', desc: '东方明珠、外滩、迪士尼' },
-                            { id: 3, name: '西安', icon: '🗿', desc: '兵马俑、古城墙、大雁塔' },
-                            { id: 4, name: '成都', icon: '🐼', desc: '大熊猫基地、宽窄巷子' },
-                            { id: 5, name: '杭州', icon: '🌊', desc: '西湖、灵隐寺、宋城' },
-                            { id: 6, name: '桂林', icon: '⛰️', desc: '漓江、象鼻山、阳朔' },
-                            { id: 7, name: '三亚', icon: '🏖️', desc: '天涯海角、亚龙湾、蜈支洲岛' },
-                            { id: 8, name: '丽江', icon: '🏔️', desc: '古城、玉龙雪山、泸沽湖' },
-                            { id: 9, name: '厦门', icon: '🌴', desc: '鼓浪屿、南普陀寺、环岛路' },
-                            { id: 10, name: '青岛', icon: '🍺', desc: '栈桥、八大关、崂山' },
-                            { id: 11, name: '苏州', icon: '🏯', desc: '园林、周庄、寒山寺' },
-                            { id: 12, name: '张家界', icon: '🌲', desc: '天门山、玻璃栈道、黄龙洞' }
+                            { id: 1, name: '北京', icon: '🏛️', desc: '故宫、长城、天安门',
+                              details: '🏛️ **北京** - 中国首都\n\n📍 必游景点：\n• 故宫博物院 - 明清两代皇家宫殿\n• 万里长城 - 世界七大奇迹之一\n• 天安门广场 - 世界上最大的城市广场\n• 颐和园 - 皇家园林艺术杰作\n• 天坛 - 明清皇帝祭天的场所\n\n🍜 特色美食：\n北京烤鸭、老北京炸酱面、豆汁焦圈、驴打滚\n\n📅 最佳旅游时间：\n春秋两季（4-5月、9-10月）气候宜人' },
+                            { id: 2, name: '上海', icon: '🏙️', desc: '东方明珠、外滩、迪士尼',
+                              details: '🏙️ **上海** - 魔都\n\n📍 必游景点：\n• 东方明珠塔 - 上海地标建筑\n• 外滩 - 万国建筑博览群\n• 上海迪士尼 - 中国首座迪士尼\n• 豫园 - 明代私家园林\n• 南京路步行街 - 中华商业第一街\n\n🍜 特色美食：\n小笼包、生煎包、排骨年糕、蟹壳黄\n\n📅 最佳旅游时间：\n春秋两季，避免梅雨季节' },
+                            { id: 3, name: '西安', icon: '🗿', desc: '兵马俑、古城墙、大雁塔',
+                              details: '🗿 **西安** - 十三朝古都\n\n📍 必游景点：\n• 秦始皇兵马俑 - 世界第八大奇迹\n• 西安古城墙 - 中国保存最完整的古城墙\n• 大雁塔 - 玄奘法师译经之地\n• 华清池 - 杨贵妃沐浴之地\n• 回民街 - 美食天堂\n\n🍜 特色美食：\n肉夹馍、羊肉泡馍、凉皮、biangbiang面\n\n📅 最佳旅游时间：\n春秋两季，4-5月和9-10月' },
+                            { id: 4, name: '成都', icon: '🐼', desc: '大熊猫基地、宽窄巷子',
+                              details: '🐼 **成都** - 天府之国\n\n📍 必游景点：\n• 大熊猫繁育基地 - 国宝之家\n• 宽窄巷子 - 清代古街道\n• 锦里 - 三国文化街区\n• 都江堰 - 古代水利工程奇迹\n• 青城山 - 道教发源地\n\n🍜 特色美食：\n火锅、串串香、麻婆豆腐、担担面、兔头\n\n📅 最佳旅游时间：\n全年皆宜，夏季稍热' },
+                            { id: 5, name: '杭州', icon: '🌊', desc: '西湖、灵隐寺、宋城',
+                              details: '🌊 **杭州** - 人间天堂\n\n📍 必游景点：\n• 西湖 - 淡妆浓抹总相宜\n• 灵隐寺 - 江南著名古刹\n• 雷峰塔 - 白娘子传说地\n• 宋城 - 给我一天还你千年\n• 千岛湖 - 天下第一秀水\n\n🍜 特色美食：\n西湖醋鱼、东坡肉、龙井虾仁、叫花鸡\n\n📅 最佳旅游时间：\n春秋两季，3-5月和9-11月' },
+                            { id: 6, name: '桂林', icon: '⛰️', desc: '漓江、象鼻山、阳朔',
+                              details: '⛰️ **桂林** - 山水甲天下\n\n📍 必游景点：\n• 漓江 - 人民币20元背景图\n• 象鼻山 - 桂林城徽\n• 阳朔西街 - 地球村\n• 龙脊梯田 - 大地雕塑\n• 芦笛岩 - 大自然艺术之宫\n\n🍜 特色美食：\n桂林米粉、啤酒鱼、荔浦芋头扣肉\n\n📅 最佳旅游时间：\n4-10月，雨季山水更美' },
+                            { id: 7, name: '三亚', icon: '🏖️', desc: '天涯海角、亚龙湾、蜈支洲岛',
+                              details: '🏖️ **三亚** - 东方夏威夷\n\n📍 必游景点：\n• 天涯海角 - 浪漫宣言地\n• 亚龙湾 - 天下第一湾\n• 蜈支洲岛 - 中国马尔代夫\n• 南山寺 - 108米海上观音\n• 亚特兰蒂斯 - 水上乐园\n\n🍜 特色美食：\n椰子鸡、海鲜大餐、清补凉、海南粉\n\n📅 最佳旅游时间：\n10月至次年3月，避寒胜地' },
+                            { id: 8, name: '丽江', icon: '🏔️', desc: '古城、玉龙雪山、泸沽湖',
+                              details: '🏔️ **丽江** - 艳遇之都\n\n📍 必游景点：\n• 丽江古城 - 世界文化遗产\n• 玉龙雪山 - 纳西族神山\n• 泸沽湖 - 女儿国\n• 蓝月谷 - 高原蓝宝石\n• 束河古镇 - 茶马古道重镇\n\n🍜 特色美食：\n腊排骨火锅、鸡豆凉粉、丽江粑粑、鲜花饼\n\n📅 最佳旅游时间：\n全年皆宜，春秋最佳' },
+                            { id: 9, name: '厦门', icon: '🌴', desc: '鼓浪屿、南普陀寺、环岛路',
+                              details: '🌴 **厦门** - 海上花园\n\n📍 必游景点：\n• 鼓浪屿 - 万国建筑博览\n• 南普陀寺 - 千年古刹\n• 环岛路 - 最美马拉松赛道\n• 曾厝垵 - 文艺小渔村\n• 厦门大学 - 中国最美大学\n\n🍜 特色美食：\n沙茶面、海蛎煎、土笋冻、花生汤\n\n📅 最佳旅游时间：\n春秋两季，避开台风季' },
+                            { id: 10, name: '青岛', icon: '🍺', desc: '栈桥、八大关、崂山',
+                              details: '🍺 **青岛** - 红瓦绿树碧海蓝天\n\n📍 必游景点：\n• 栈桥 - 青岛标志\n• 八大关 - 万国建筑博览会\n• 崂山 - 海上第一名山\n• 五四广场 - 城市客厅\n• 青岛啤酒博物馆 - 啤酒文化\n\n🍜 特色美食：\n青岛啤酒、海鲜大餐、烤鱿鱼、辣炒蛤蜊\n\n📅 最佳旅游时间：\n5-10月，8月有啤酒节' },
+                            { id: 11, name: '苏州', icon: '🏯', desc: '园林、周庄、寒山寺',
+                              details: '🏯 **苏州** - 东方威尼斯\n\n📍 必游景点：\n• 拙政园 - 中国四大名园之首\n• 狮子林 - 假山王国\n• 周庄古镇 - 中国第一水乡\n• 寒山寺 - 夜半钟声到客船\n• 虎丘 - 吴中第一名胜\n\n🍜 特色美食：\n松鼠桂鱼、太湖三白、苏式月饼、碧螺春茶\n\n📅 最佳旅游时间：\n春秋两季，4-5月和9-10月' },
+                            { id: 12, name: '张家界', icon: '🌲', desc: '天门山、玻璃栈道、黄龙洞',
+                              details: '🌲 **张家界** - 缩小版仙境\n\n📍 必游景点：\n• 天门山 - 世界最长索道\n• 玻璃栈道 - 悬崖上的心跳\n• 黄龙洞 - 地下明珠\n• 袁家界 - 阿凡达取景地\n• 金鞭溪 - 天下最美溪流\n\n🍜 特色美食：\n三下锅、葛根粉、土家腊肉、岩耳炖鸡\n\n📅 最佳旅游时间：\n春秋两季，9-11月最美' }
                         ]
                     };
+                }
+                // 确保visitedCities存在（兼容旧数据）
+                if (data.travel && !data.travel.visitedCities) {
+                    data.travel.visitedCities = [];
                 }
             }
 
@@ -1619,7 +2123,21 @@
             if (!data.sports) {
                 data.sports = {
                     badminton: { records: [], totalMinutes: 0, totalPoints: 0 },
-                    tennis: { records: [], totalMinutes: 0, totalPoints: 0 }
+                    outdoor: { records: [], totalMinutes: 0, totalPoints: 0 }
+                };
+            }
+            // 兼容旧数据 - 如果有tennis数据，迁移到outdoor
+            if (data.sports.tennis && !data.sports.outdoor) {
+                data.sports.outdoor = data.sports.tennis;
+                delete data.sports.tennis;
+            }
+
+            // 确保家务数据存在
+            if (!data.chores) {
+                data.chores = {
+                    records: [],
+                    totalCount: 0,
+                    totalPoints: 0
                 };
             }
 
@@ -1871,6 +2389,7 @@
         function addBook() {
             const title = document.getElementById('bookTitle').value.trim();
             const author = document.getElementById('bookAuthor').value.trim();
+            const category = document.getElementById('bookCategory').value;
             const totalPages = parseInt(document.getElementById('bookPages').value);
             const totalWords = parseInt(document.getElementById('bookWords').value) || 0;
 
@@ -1888,6 +2407,7 @@
                 id: Date.now(),
                 title,
                 author: author || '未知作者',
+                category: category,
                 totalPages,
                 totalWords,
                 currentPage: 0,
@@ -1918,6 +2438,10 @@
                 const progress = (book.currentPage / book.totalPages * 100).toFixed(1);
                 const isCompleted = book.currentPage >= book.totalPages;
 
+                // 类别标签样式
+                const categoryBadge = book.category && book.category !== '图书' ?
+                    `<span class="category-badge">${book.category}</span>` : '';
+
                 // 计算已读字数
                 let wordInfo = '';
                 if (book.totalWords && book.totalWords > 0) {
@@ -1931,8 +2455,8 @@
                     <div class="card ${isCompleted ? 'completed' : ''}">
                         <div class="card-header">
                             <div>
-                                <div class="card-title">${isCompleted ? '✅ ' : ''}${book.title}</div>
-                                <div style="color: #666; font-size: 14px;">作者: ${book.author}</div>
+                                <div class="card-title">${isCompleted ? '✅ ' : ''}${book.title} ${categoryBadge}</div>
+                                <div style="color: #666; font-size: 14px;">作者: ${book.author || '未知'}</div>
                                 ${wordInfo}
                             </div>
                             <div style="text-align: right;">
@@ -2372,17 +2896,114 @@
 
             grid.innerHTML = data.travel.cities.map(city => {
                 const isUnlocked = data.travel.unlockedCities.includes(city.id);
+                const isVisited = data.travel.visitedCities.includes(city.id);
                 return `
-                    <div class="city-card ${isUnlocked ? 'unlocked' : ''}">
+                    <div class="city-card ${isUnlocked ? 'unlocked' : ''} ${isVisited ? 'visited' : ''}">
                         <div class="city-icon">${city.icon}</div>
                         <div class="city-name">${city.name}</div>
                         <div class="city-desc">${city.desc}</div>
                         <div class="city-status ${isUnlocked ? 'unlocked' : 'locked'}">
                             ${isUnlocked ? '✅ 已解锁' : '🔒 未解锁'}
                         </div>
+                        <div class="city-card-buttons">
+                            <button class="city-detail-btn" onclick="showCityDetails(${city.id})">
+                                📖 查看详情
+                            </button>
+                            ${isUnlocked ? `
+                                <button class="visit-toggle-btn ${isVisited ? 'visited' : ''}"
+                                        onclick="toggleVisited(${city.id})">
+                                    ${isVisited ? '✈️ 已去过' : '📅 标记去过'}
+                                </button>
+                            ` : ''}
+                        </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        // 切换城市访问状态
+        function toggleVisited(cityId) {
+            const index = data.travel.visitedCities.indexOf(cityId);
+            if (index > -1) {
+                data.travel.visitedCities.splice(index, 1);
+            } else {
+                data.travel.visitedCities.push(cityId);
+            }
+            saveData();
+            renderCities();
+        }
+
+        // 显示城市详情
+        function showCityDetails(cityId) {
+            const city = data.travel.cities.find(c => c.id === cityId);
+            if (!city) return;
+
+            // 兼容旧数据 - 如果没有详情，使用默认内容
+            const cityDetails = city.details || `${city.icon} **${city.name}**
+
+📍 简介：
+${city.desc}
+
+这是一个美丽的中国旅游城市，等你来探索！
+
+📝 解锁后可以标记"去过"状态，记录你的旅行足迹。`;
+
+            const isUnlocked = data.travel.unlockedCities.includes(cityId);
+            const isVisited = data.travel.visitedCities.includes(cityId);
+
+            // 创建详情弹窗
+            const modal = document.createElement('div');
+            modal.className = 'city-detail-modal';
+            modal.innerHTML = `
+                <div class="city-detail-content" onclick="event.stopPropagation()">
+                    <button class="city-detail-close" onclick="closeCityDetails()">×</button>
+                    <div class="city-detail-header">
+                        <span class="city-detail-icon">${city.icon}</span>
+                        <h2>${city.name}</h2>
+                        ${isUnlocked ? `
+                            <span class="city-badge unlocked-badge">已解锁</span>
+                            ${isVisited ? '<span class="city-badge visited-badge">✈️ 已去过</span>' : '<span class="city-badge not-visited-badge">📅 未去过</span>'}
+                        ` : '<span class="city-badge locked-badge">🔒 未解锁</span>'}
+                    </div>
+                    <div class="city-detail-body">
+                        <pre style="white-space: pre-wrap; font-family: inherit; line-height: 1.8;">${cityDetails}</pre>
+                    </div>
+                    ${isUnlocked ? `
+                        <div class="city-detail-footer">
+                            <button class="visit-action-btn ${isVisited ? 'visited' : ''}"
+                                    onclick="toggleVisitedFromModal(${cityId}); closeCityDetails();">
+                                ${isVisited ? '✕ 取消去过标记' : '✓ 标记为已去过'}
+                            </button>
+                        </div>
+                    ` : `
+                        <div class="city-detail-footer">
+                            <button class="unlock-hint-btn">💎 需要5000积分解锁</button>
+                        </div>
+                    `}
+                </div>
+            `;
+            modal.onclick = closeCityDetails;
+            document.body.appendChild(modal);
+        }
+
+        // 从弹窗切换访问状态
+        function toggleVisitedFromModal(cityId) {
+            const index = data.travel.visitedCities.indexOf(cityId);
+            if (index > -1) {
+                data.travel.visitedCities.splice(index, 1);
+            } else {
+                data.travel.visitedCities.push(cityId);
+            }
+            saveData();
+            renderCities();
+        }
+
+        // 关闭城市详情
+        function closeCityDetails() {
+            const modal = document.querySelector('.city-detail-modal');
+            if (modal) {
+                modal.remove();
+            }
         }
 
         function redeemTravel() {
@@ -2549,13 +3170,26 @@
 
         // 运动提升功能
         function addTraining(sport) {
-            const sportName = sport === 'badminton' ? '羽毛球' : '网球';
+            const sportNames = {
+                'badminton': '羽毛球',
+                'outdoor': '户外活动'
+            };
+            const sportName = sportNames[sport] || sport;
+
             const duration = parseInt(document.getElementById(`${sport}Duration`).value);
-            const type = document.getElementById(`${sport}Type`).value;
+            let type = document.getElementById(`${sport}Type`).value;
             const note = document.getElementById(`${sport}Note`).value.trim();
 
+            // 处理户外活动的自定义类型
+            if (sport === 'outdoor') {
+                if (type === '自定义') {
+                    const customValue = document.getElementById('outdoorCustom').value.trim();
+                    type = customValue || '自定义活动';
+                }
+            }
+
             if (!duration || duration < 1) {
-                alert('请输入有效的训练时长');
+                alert('请输入有效的活动时长');
                 return;
             }
 
@@ -2591,26 +3225,27 @@
             data.sports[sport].totalPoints += points;
 
             // 添加积分
-            addPoints(points, `${sportName}训练 - ${duration}分钟`);
+            addPoints(points, `${sportName} - ${duration}分钟`);
 
             saveData();
             renderSportsRecords();
             updateSportsStats();
+            updatePointsDisplay();
+            renderPointsHistory();
 
             // 清空输入
             document.getElementById(`${sport}Duration`).value = '';
             document.getElementById(`${sport}Note`).value = '';
 
             // 显示提示
-            alert(`🎉 训练记录成功！\n\n${sportName} - ${type}\n训练时长：${duration}分钟\n获得积分：+${points}\n\n继续加油！💪`);
-            showPointsNotification(`+${points} 积分`);
+            alert(`🎉 活动记录成功！\n\n${sportName} - ${type}\n活动时长：${duration}分钟\n获得积分：+${points}\n\n继续加油！💪`);
         }
 
         function renderSportsRecords() {
             // 渲染羽毛球记录
             renderSportRecords('badminton', '🏸');
-            // 渲染网球记录
-            renderSportRecords('tennis', '🎾');
+            // 渲染户外活动记录
+            renderSportRecords('outdoor', '🌳');
         }
 
         function renderSportRecords(sport, icon) {
@@ -2650,7 +3285,7 @@
             if (!data.sports) {
                 data.sports = {
                     badminton: { records: [], totalMinutes: 0, totalPoints: 0 },
-                    tennis: { records: [], totalMinutes: 0, totalPoints: 0 }
+                    outdoor: { records: [], totalMinutes: 0, totalPoints: 0 }
                 };
             }
 
@@ -2660,22 +3295,140 @@
             document.getElementById('badmintonCount').textContent = badmintonCount;
             document.getElementById('badmintonHours').textContent = badmintonHours;
 
-            // 更新网球统计
-            const tennisCount = data.sports.tennis.records.length;
-            const tennisHours = (data.sports.tennis.totalMinutes / 60).toFixed(1);
-            document.getElementById('tennisCount').textContent = tennisCount;
-            document.getElementById('tennisHours').textContent = tennisHours;
+            // 更新户外活动统计
+            const outdoorCount = data.sports.outdoor.records.length;
+            const outdoorHours = (data.sports.outdoor.totalMinutes / 60).toFixed(1);
+            document.getElementById('outdoorCount').textContent = outdoorCount;
+            document.getElementById('outdoorHours').textContent = outdoorHours;
 
             // 更新总体统计
-            const totalTrainings = badmintonCount + tennisCount;
-            const totalMinutes = data.sports.badminton.totalMinutes + data.sports.tennis.totalMinutes;
+            const totalTrainings = badmintonCount + outdoorCount;
+            const totalMinutes = data.sports.badminton.totalMinutes + data.sports.outdoor.totalMinutes;
             const totalHours = (totalMinutes / 60).toFixed(1);
-            const sportsPoints = data.sports.badminton.totalPoints + data.sports.tennis.totalPoints;
+            const sportsPoints = data.sports.badminton.totalPoints + data.sports.outdoor.totalPoints;
 
             document.getElementById('totalTrainings').textContent = totalTrainings;
             document.getElementById('totalHours').textContent = totalHours + 'h';
             document.getElementById('sportsPoints').textContent = sportsPoints;
         }
+
+        // 家务劳动功能
+        function completeChore(choreName, points) {
+            if (!confirm(`确认完成 "${choreName}" 了吗？`)) {
+                return;
+            }
+
+            const now = new Date();
+            const record = {
+                id: Date.now(),
+                name: choreName,
+                points: points,
+                date: now.toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            };
+
+            data.chores.records.unshift(record);
+            data.chores.totalCount++;
+            data.chores.totalPoints += points;
+
+            addPoints(points, `完成家务: ${choreName}`);
+            saveData();
+            renderChoreRecords();
+            updateChoreStats();
+            updatePointsDisplay();
+            renderPointsHistory();
+
+            // 显示成功提示
+            showToast(`🎉 太棒了！完成 ${choreName}，获得 ${points} 积分！`);
+        }
+
+        function renderChoreRecords() {
+            const container = document.getElementById('choreRecords');
+            if (!container) return;
+
+            if (data.chores.records.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.7); padding: 20px;">还没有完成过家务哦，开始劳动吧！</p>';
+                return;
+            }
+
+            // 只显示最近10条记录
+            const recentRecords = data.chores.records.slice(0, 10);
+            container.innerHTML = recentRecords.map(record => `
+                <div class="chore-record-item">
+                    <div class="chore-record-info">
+                        <span class="chore-record-name">${record.name}</span>
+                        <span class="chore-record-time">${record.date}</span>
+                    </div>
+                    <span class="chore-record-points">+${record.points} 积分</span>
+                </div>
+            `).join('');
+        }
+
+        function updateChoreStats() {
+            document.getElementById('choreCount').textContent = data.chores.totalCount || 0;
+            document.getElementById('chorePoints').textContent = data.chores.totalPoints || 0;
+        }
+
+        // 显示提示消息
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 30px;
+                font-size: 16px;
+                font-weight: bold;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                animation: slideDown 0.3s, fadeOut 0.3s 2.7s;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            // 添加动画样式
+            if (!document.getElementById('toast-style')) {
+                const style = document.createElement('style');
+                style.id = 'toast-style';
+                style.textContent = `
+                    @keyframes slideDown {
+                        from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+                        to { transform: translateX(-50%) translateY(0); opacity: 1; }
+                    }
+                    @keyframes fadeOut {
+                        from { opacity: 1; }
+                        to { opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // 户外活动类型选择事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const outdoorTypeSelect = document.getElementById('outdoorType');
+            if (outdoorTypeSelect) {
+                outdoorTypeSelect.addEventListener('change', function() {
+                    const customInput = document.getElementById('outdoorCustom');
+                    if (customInput) {
+                        customInput.style.display = this.value === '自定义' ? 'block' : 'none';
+                    }
+                });
+            }
+        });
 
         // 页面加载时初始化
         window.onload = init;
