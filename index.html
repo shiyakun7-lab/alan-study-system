@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alan的自驱进化计划</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            position: relative;
+        }
+
+        .points-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 8px 25px rgba(245, 87, 108, 0.6); }
+        }
+
+        .points-badge .points-number {
+            font-size: 24px;
+            margin: 0 5px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .date-info {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #495057;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .input-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-small {
+            padding: 6px 15px;
+            font-size: 14px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+
+        .card.completed {
+            opacity: 0.7;
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-content {
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .book-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .book-info {
+            flex: 1;
+        }
+
+        .book-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .book-progress {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        /* 番茄钟样式 */
+        .pomodoro-container {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .pomodoro-timer {
+            font-size: 72px;
+            font-weight: bold;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .pomodoro-status {
+            font-size: 20px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .pomodoro-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .pomodoro-btn {
+            padding: 12px 30px;
+            border: 2px solid white;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pomodoro-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .pomodoro-btn.active {
+            background: white;
+            color: #ff6b6b;
+        }
+
+        .pomodoro-stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* 积分兑换样式 */
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .reward-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .reward-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(252, 182, 159, 0.5);
+            border-color: #f5576c;
+        }
+
+        .reward-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .reward-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .reward-cost {
+            font-size: 24px;
+            color: #f5576c;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .reward-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reward-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .reward-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .points-history {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #28a745;
+        }
+
+        .history-item.negative {
+            border-left-color: #dc3545;
+        }
+
+        .history-points {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .history-points.positive {
+            color: #28a745;
+        }
+
+        .history-points.negative {
+            color: #dc3545;
+        }
+
+        .achievement-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin: 5px;
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* 作息表样式 */
+        .schedule-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .schedule-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            border-left: 4px solid #667eea;
+        }
+
+        .schedule-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .schedule-item.completed {
+            opacity: 0.6;
+            border-left-color: #28a745;
+            background: #f0f0f0;
+        }
+
+        .schedule-time {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 100px;
+            margin-right: 15px;
+        }
+
+        .schedule-activity {
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .schedule-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .schedule-check {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+        }
+
+        .schedule-check:hover {
+            background: #e7f1ff;
+        }
+
+        .schedule-check.checked {
+            background: #28a745;
+            border-color: #28a745;
+        }
+
+        .schedule-check.checked::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+        }
+
+        .schedule-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .schedule-input-row input {
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .schedule-input-row input[type="time"] {
+            width: 120px;
+        }
+
+        .schedule-input-row input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* 探索世界样式 */
+        .world-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .china-map {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            position: relative;
+            min-height: 400px;
+            backdrop-filter: blur(10px);
+        }
+
+        .map-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .city-card {
+            background: white;
+            color: #333;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .city-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .city-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .city-card.unlocked {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .city-card.unlocked::before {
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .city-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .city-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .city-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .city-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .city-status.locked {
+            background: #e9ecef;
+            color: #999;
+        }
+
+        .city-status.unlocked {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .travel-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .travel-stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 150px;
+        }
+
+        .travel-stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .travel-stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* 测试板块样式 */
+        .test-container {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .test-subjects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .subject-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: #fa709a;
+        }
+
+        .subject-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .subject-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subject-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .test-history {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .test-record {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .test-record.excellent {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .test-record.good {
+            border-left-color: #ffc107;
+            background: #fff3cd;
+        }
+
+        .test-record.poor {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .test-score {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .test-score.excellent {
+            color: #28a745;
+        }
+
+        .test-score.good {
+            color: #ffc107;
+        }
+
+        .test-score.poor {
+            color: #dc3545;
+        }
+
+        .test-form {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .test-form input,
+        .test-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .test-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .test-stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .test-stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #fa709a;
+            margin-bottom: 5px;
+        }
+
+        .test-stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 运动提升样式 */
+        .sports-container {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .sports-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .sport-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .sport-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .sport-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #43e97b;
+        }
+
+        .sport-icon-large {
+            font-size: 48px;
+            margin-right: 15px;
+        }
+
+        .sport-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .sport-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .sport-stat-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .sport-stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #43e97b;
+            margin-bottom: 5px;
+        }
+
+        .sport-stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .training-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .training-form input,
+        .training-form select,
+        .training-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .training-records {
+            margin-top: 20px;
+        }
+
+        .training-record-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #43e97b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .training-record-item:hover {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .training-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .sports-overview {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .achievement-item {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .achievement-item:hover {
+            transform: scale(1.05);
+        }
+
+        .achievement-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .achievement-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Alan的自驱进化计划</h1>
+            <div class="date-info" id="dateInfo"></div>
+            <div class="points-badge">
+                ⭐ <span class="points-number" id="headerPoints">0</span> 积分
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">📊 总览</button>
+            <button class="tab-btn" onclick="switchTab('homework')">📝 作业管理</button>
+            <button class="tab-btn" onclick="switchTab('reading')">📖 阅读管理</button>
+            <button class="tab-btn" onclick="switchTab('plan')">📅 学习计划</button>
+            <button class="tab-btn" onclick="switchTab('test')">📋 学习测试</button>
+            <button class="tab-btn" onclick="switchTab('sports')">🏸 运动提升</button>
+            <button class="tab-btn" onclick="switchTab('rewards')">🎁 积分兑换</button>
+            <button class="tab-btn" onclick="switchTab('world')">🌏 探索世界</button>
+            <button class="tab-btn" onclick="switchTab('training')">🎯 注意力训练</button>
+        </nav>
+
+        <!-- 总览页面 -->
+        <div id="dashboard" class="tab-content active">
+            <h2 class="section-title">学习概况</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalHomework">0</div>
+                    <div class="stat-label">待完成作业</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalBooks">0</div>
+                    <div class="stat-label">阅读书籍</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="studyDays">0</div>
+                    <div class="stat-label">已学习天数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedTasks">0</div>
+                    <div class="stat-label">已完成任务</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <div class="stat-number" id="totalPoints">0</div>
+                    <div class="stat-label">总积分</div>
+                </div>
+            </div>
+
+            <h3 class="section-title">今日任务</h3>
+            <div id="todayTasks"></div>
+
+            <h3 class="section-title">📅 今日作息完成情况</h3>
+            <div id="scheduleProgress" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <div style="font-size: 24px; font-weight: bold; color: #333;">
+                            已完成 <span id="completedSchedule">0</span> / <span id="totalSchedule">0</span> 项
+                        </div>
+                        <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                            完成率: <span id="scheduleRate">0</span>%
+                        </div>
+                    </div>
+                    <div style="font-size: 48px;">
+                        <span id="scheduleEmoji">📋</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="scheduleProgressBar" style="width: 0%">0%</div>
+                </div>
+                <div style="text-align: center; margin-top: 15px; font-size: 14px; color: #666;">
+                    💡 每完成一项作息可获得 <strong style="color: #667eea;">+1积分</strong>
+                </div>
+            </div>
+
+            <h3 class="section-title">阅读进度</h3>
+            <div id="readingProgress"></div>
+
+            <h3 class="section-title">📅 今日作息表</h3>
+            <div class="schedule-container">
+                <div class="schedule-input-row">
+                    <input type="time" id="scheduleTime" value="07:00">
+                    <input type="text" id="scheduleActivity" placeholder="活动内容（如：起床、早餐、学习等）">
+                    <button class="btn btn-primary btn-small" onclick="addScheduleItem()">添加</button>
+                </div>
+                <div id="scheduleList" class="schedule-list"></div>
+            </div>
+        </div>
+
+        <!-- 作业管理页面 -->
+        <div id="homework" class="tab-content">
+            <h2 class="section-title">作业管理</h2>
+
+            <!-- 番茄钟 -->
+            <div class="pomodoro-container">
+                <h3 style="margin-bottom: 10px;">🍅 番茄专注钟</h3>
+                <div class="pomodoro-status" id="pomodoroStatus">准备开始学习</div>
+                <div class="pomodoro-timer" id="pomodoroTimer">25:00</div>
+                <div class="pomodoro-controls">
+                    <button class="pomodoro-btn" onclick="startPomodoro()">开始</button>
+                    <button class="pomodoro-btn" onclick="pausePomodoro()">暂停</button>
+                    <button class="pomodoro-btn" onclick="resetPomodoro()">重置</button>
+                </div>
+                <div class="pomodoro-stats">
+                    <span>今日完成: <strong id="todayPomodoros">0</strong> 个番茄钟</span>
+                    <span>累计学习: <strong id="totalStudyTime">0</strong> 分钟</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="homeworkTitle" placeholder="作业标题（如：数学寒假作业第1-10页）">
+                <select id="homeworkSubject">
+                    <option value="语文">语文</option>
+                    <option value="数学">数学</option>
+                    <option value="英语">英语</option>
+                    <option value="科学">科学</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <textarea id="homeworkDesc" placeholder="作业详细说明（可选）"></textarea>
+                <input type="date" id="homeworkDeadline">
+                <button class="btn btn-primary" onclick="addHomework()">添加作业</button>
+            </div>
+
+            <h3 class="section-title">作业列表</h3>
+            <div id="homeworkList"></div>
+        </div>
+
+        <!-- 阅读管理页面 -->
+        <div id="reading" class="tab-content">
+            <h2 class="section-title">阅读管理</h2>
+            <div class="input-group">
+                <input type="text" id="bookTitle" placeholder="书名">
+                <input type="text" id="bookAuthor" placeholder="作者">
+                <input type="number" id="bookPages" placeholder="总页数" min="1">
+                <input type="number" id="bookWords" placeholder="总字数（可选）" min="1">
+                <button class="btn btn-primary" onclick="addBook()">添加到书单</button>
+            </div>
+
+            <h3 class="section-title">我的书单</h3>
+            <div id="bookList"></div>
+        </div>
+
+        <!-- 学习计划页面 -->
+        <div id="plan" class="tab-content">
+            <h2 class="section-title">学习计划</h2>
+            <div class="input-group">
+                <input type="text" id="planTitle" placeholder="计划标题（如：每天背20个单词）">
+                <select id="planType">
+                    <option value="daily">每日计划</option>
+                    <option value="weekly">每周计划</option>
+                    <option value="custom">自定义</option>
+                </select>
+                <button class="btn btn-primary" onclick="addPlan()">添加计划</button>
+            </div>
+
+            <h3 class="section-title">我的计划</h3>
+            <div id="planList"></div>
+        </div>
+
+        <!-- 学习测试页面 -->
+        <div id="test" class="tab-content">
+            <div class="test-container">
+                <h2 style="text-align: center; font-size: 32px; font-weight: bold; color: white; margin-bottom: 10px;">
+                    📋 学习进度测试
+                </h2>
+                <p style="text-align: center; font-size: 18px; color: white; opacity: 0.9; margin-bottom: 30px;">
+                    每周测试，检验学习成果，获得积分奖励！
+                </p>
+
+                <div class="test-stats-grid">
+                    <div class="test-stat-card">
+                        <div class="test-stat-number" id="totalTests">0</div>
+                        <div class="test-stat-label">总测试次数</div>
+                    </div>
+                    <div class="test-stat-card">
+                        <div class="test-stat-number" id="avgScore">0</div>
+                        <div class="test-stat-label">平均分</div>
+                    </div>
+                    <div class="test-stat-card">
+                        <div class="test-stat-number" id="excellentCount">0</div>
+                        <div class="test-stat-label">优秀次数</div>
+                    </div>
+                    <div class="test-stat-card">
+                        <div class="test-stat-number" id="testPoints">0</div>
+                        <div class="test-stat-label">测试获得积分</div>
+                    </div>
+                </div>
+
+                <h3 style="color: white; margin: 30px 0 20px; font-size: 24px;">选择测试科目</h3>
+                <div class="test-subjects">
+                    <div class="subject-card" onclick="startTest('语文')">
+                        <div class="subject-icon">📚</div>
+                        <div class="subject-name">语文</div>
+                        <div class="subject-desc">阅读理解、古诗词</div>
+                    </div>
+                    <div class="subject-card" onclick="startTest('数学')">
+                        <div class="subject-icon">🔢</div>
+                        <div class="subject-name">数学</div>
+                        <div class="subject-desc">计算、应用题</div>
+                    </div>
+                    <div class="subject-card" onclick="startTest('英语')">
+                        <div class="subject-icon">🔤</div>
+                        <div class="subject-name">英语</div>
+                        <div class="subject-desc">单词、语法</div>
+                    </div>
+                    <div class="subject-card" onclick="startTest('科学')">
+                        <div class="subject-icon">🔬</div>
+                        <div class="subject-name">科学</div>
+                        <div class="subject-desc">自然、实验</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-history">
+                <h3 style="color: #333; margin-bottom: 20px; font-size: 24px;">📊 测试记录</h3>
+                <div id="testRecords"></div>
+            </div>
+        </div>
+
+        <!-- 运动提升页面 -->
+        <div id="sports" class="tab-content">
+            <div class="sports-container">
+                <h2 style="text-align: center; font-size: 32px; font-weight: bold; color: white; margin-bottom: 10px;">
+                    🏸 运动提升计划
+                </h2>
+                <p style="text-align: center; font-size: 18px; color: white; opacity: 0.9; margin-bottom: 30px;">
+                    强健体魄，全面发展！记录训练，获得积分奖励！
+                </p>
+
+                <div class="sports-cards">
+                    <!-- 羽毛球卡片 -->
+                    <div class="sport-card">
+                        <div class="sport-header">
+                            <div class="sport-icon-large">🏸</div>
+                            <div class="sport-title">羽毛球</div>
+                        </div>
+
+                        <div class="sport-stats">
+                            <div class="sport-stat-item">
+                                <div class="sport-stat-value" id="badmintonCount">0</div>
+                                <div class="sport-stat-label">训练次数</div>
+                            </div>
+                            <div class="sport-stat-item">
+                                <div class="sport-stat-value" id="badmintonHours">0</div>
+                                <div class="sport-stat-label">总时长(小时)</div>
+                            </div>
+                        </div>
+
+                        <div class="training-form">
+                            <input type="number" id="badmintonDuration" placeholder="训练时长（分钟）" min="1">
+                            <select id="badmintonType">
+                                <option value="基础练习">基础练习</option>
+                                <option value="发球训练">发球训练</option>
+                                <option value="接球训练">接球训练</option>
+                                <option value="对打练习">对打练习</option>
+                                <option value="比赛">比赛</option>
+                            </select>
+                            <textarea id="badmintonNote" placeholder="训练笔记（可选）" rows="2"></textarea>
+                            <button class="btn btn-primary" onclick="addTraining('badminton')">记录训练</button>
+                        </div>
+
+                        <div class="training-records">
+                            <h4 style="margin: 15px 0 10px; color: #333;">最近训练</h4>
+                            <div id="badmintonRecords"></div>
+                        </div>
+                    </div>
+
+                    <!-- 网球卡片 -->
+                    <div class="sport-card">
+                        <div class="sport-header">
+                            <div class="sport-icon-large">🎾</div>
+                            <div class="sport-title">网球</div>
+                        </div>
+
+                        <div class="sport-stats">
+                            <div class="sport-stat-item">
+                                <div class="sport-stat-value" id="tennisCount">0</div>
+                                <div class="sport-stat-label">训练次数</div>
+                            </div>
+                            <div class="sport-stat-item">
+                                <div class="sport-stat-value" id="tennisHours">0</div>
+                                <div class="sport-stat-label">总时长(小时)</div>
+                            </div>
+                        </div>
+
+                        <div class="training-form">
+                            <input type="number" id="tennisDuration" placeholder="训练时长（分钟）" min="1">
+                            <select id="tennisType">
+                                <option value="基础练习">基础练习</option>
+                                <option value="正手训练">正手训练</option>
+                                <option value="反手训练">反手训练</option>
+                                <option value="发球训练">发球训练</option>
+                                <option value="对打练习">对打练习</option>
+                                <option value="比赛">比赛</option>
+                            </select>
+                            <textarea id="tennisNote" placeholder="训练笔记（可选）" rows="2"></textarea>
+                            <button class="btn btn-primary" onclick="addTraining('tennis')">记录训练</button>
+                        </div>
+
+                        <div class="training-records">
+                            <h4 style="margin: 15px 0 10px; color: #333;">最近训练</h4>
+                            <div id="tennisRecords"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sports-overview">
+                <h3 style="color: #333; margin-bottom: 20px; font-size: 24px;">🏆 运动成就</h3>
+                <div class="achievement-grid">
+                    <div class="achievement-item">
+                        <div class="achievement-icon">💪</div>
+                        <div class="achievement-name">总训练次数</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #333; margin-top: 10px;" id="totalTrainings">0</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">⏱️</div>
+                        <div class="achievement-name">总训练时长</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #333; margin-top: 10px;" id="totalHours">0</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">⭐</div>
+                        <div class="achievement-name">运动积分</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #333; margin-top: 10px;" id="sportsPoints">0</div>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h4 style="color: #333; margin-bottom: 15px;">💡 积分规则</h4>
+                    <p style="color: #666; line-height: 1.8;">
+                        • 训练30分钟：+10积分<br>
+                        • 训练60分钟：+15积分<br>
+                        • 训练90分钟以上：+20积分<br>
+                        • 坚持运动，强健体魄，获得更多积分！
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 积分兑换页面 -->
+        <div id="rewards" class="tab-content">
+            <h2 class="section-title">🎁 积分兑换中心</h2>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 48px; font-weight: bold; color: #f5576c;">
+                    <span id="currentPoints">0</span> 积分
+                </div>
+                <p style="color: #666; margin-top: 10px;">通过完成学习任务获得积分，兑换奖励！</p>
+            </div>
+
+            <h3 class="section-title">可兑换奖励</h3>
+            <div class="rewards-grid">
+                <div class="reward-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; grid-column: span 2;">
+                    <div class="reward-icon">✈️</div>
+                    <div class="reward-title" style="color: white;">旅游目的地智选</div>
+                    <div class="reward-cost" style="color: #ffd700;">5000 积分</div>
+                    <p style="font-size: 14px; margin: 10px 0; opacity: 0.9;">解锁一个梦想旅行城市！</p>
+                    <button class="reward-btn" style="background: white; color: #667eea;" onclick="redeemTravel()">立即兑换</button>
+                </div>
+                <div class="reward-card">
+                    <div class="reward-icon">💰</div>
+                    <div class="reward-title">零花钱 10元</div>
+                    <div class="reward-cost">100 积分</div>
+                    <button class="reward-btn" onclick="redeemReward('money', 100, 10)">立即兑换</button>
+                </div>
+                <div class="reward-card">
+                    <div class="reward-icon">🎮</div>
+                    <div class="reward-title">游戏时间 30分钟</div>
+                    <div class="reward-cost">50 积分</div>
+                    <button class="reward-btn" onclick="redeemReward('game', 50, 30)">立即兑换</button>
+                </div>
+                <div class="reward-card">
+                    <div class="reward-icon">💵</div>
+                    <div class="reward-title">零花钱 5元</div>
+                    <div class="reward-cost">50 积分</div>
+                    <button class="reward-btn" onclick="redeemReward('money', 50, 5)">立即兑换</button>
+                </div>
+                <div class="reward-card">
+                    <div class="reward-icon">🎯</div>
+                    <div class="reward-title">游戏时间 60分钟</div>
+                    <div class="reward-cost">100 积分</div>
+                    <button class="reward-btn" onclick="redeemReward('game', 100, 60)">立即兑换</button>
+                </div>
+            </div>
+
+            <h3 class="section-title" style="margin-top: 40px;">📋 积分获取规则</h3>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px;">📝</div>
+                        <div style="font-weight: bold; color: #667eea;">+10 积分</div>
+                        <div style="color: #666; font-size: 14px;">完成一个作业</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px;">🍅</div>
+                        <div style="font-weight: bold; color: #667eea;">+5 积分</div>
+                        <div style="color: #666; font-size: 14px;">完成一个番茄钟</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px;">📖</div>
+                        <div style="font-weight: bold; color: #667eea;">+20 积分</div>
+                        <div style="color: #666; font-size: 14px;">读完一本书</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px;">📚</div>
+                        <div style="font-weight: bold; color: #667eea;">+2 积分</div>
+                        <div style="color: #666; font-size: 14px;">更新阅读进度</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px;">📅</div>
+                        <div style="font-weight: bold; color: #667eea;">+8 积分</div>
+                        <div style="color: #666; font-size: 14px;">完成学习计划</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px;">⏰</div>
+                        <div style="font-weight: bold; color: #667eea;">+1 积分</div>
+                        <div style="color: #666; font-size: 14px;">完成作息项</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px;">📋</div>
+                        <div style="font-weight: bold; color: #667eea;">+10~30 积分</div>
+                        <div style="color: #666; font-size: 14px;">学习测试</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px;">🏸</div>
+                        <div style="font-weight: bold; color: #667eea;">+10~20 积分</div>
+                        <div style="color: #666; font-size: 14px;">运动训练</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-title">📜 积分记录</h3>
+            <div id="pointsHistory" class="points-history"></div>
+        </div>
+
+        <!-- 探索世界页面 -->
+        <div id="world" class="tab-content">
+            <div class="world-container">
+                <h2 class="map-title">🌏 探索中国 · 梦想之旅</h2>
+                <p style="text-align: center; font-size: 18px; margin-bottom: 20px; opacity: 0.9;">
+                    努力学习，积累积分，解锁你的梦想旅行目的地！
+                </p>
+
+                <div class="travel-stats">
+                    <div class="travel-stat">
+                        <div class="travel-stat-number" id="unlockedCities">0</div>
+                        <div class="travel-stat-label">已解锁城市</div>
+                    </div>
+                    <div class="travel-stat">
+                        <div class="travel-stat-number" id="totalCities">12</div>
+                        <div class="travel-stat-label">全部城市</div>
+                    </div>
+                    <div class="travel-stat">
+                        <div class="travel-stat-number" id="travelPoints">0</div>
+                        <div class="travel-stat-label">当前积分</div>
+                    </div>
+                </div>
+
+                <div class="china-map">
+                    <div style="text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+                        🗺️ 中国热门旅游城市
+                    </div>
+                    <div class="cities-grid" id="citiesGrid"></div>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; margin-top: 20px;">
+                    <h3 style="margin-bottom: 15px;">💡 如何解锁旅游目的地？</h3>
+                    <p style="font-size: 16px; line-height: 1.8;">
+                        1️⃣ 通过完成作业、阅读、学习计划等任务积累积分<br>
+                        2️⃣ 在"积分兑换"页面用 <strong>5000积分</strong> 兑换一次旅游目的地智选<br>
+                        3️⃣ 兑换后可以选择任意一个城市解锁<br>
+                        4️⃣ 解锁的城市代表你可以和家人一起去旅行啦！🎉
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 注意力训练页面 -->
+        <div id="training" class="tab-content">
+            <h2 class="section-title">注意力训练</h2>
+            <p style="color: #666; margin-bottom: 20px;">通过游戏训练提升专注力和反应能力</p>
+            <button class="btn btn-primary" onclick="openTraining()">打开训练系统</button>
+        </div>
+    </div>
+
+    <script>
+        // 数据存储
+        let data = {
+            homework: [],
+            books: [],
+            plans: [],
+            studyDays: 0,
+            completedTasks: 0,
+            lastVisit: null,
+            pomodoros: {
+                today: 0,
+                totalTime: 0,
+                lastDate: null
+            },
+            points: {
+                total: 0,
+                history: []
+            },
+            schedule: [],
+            travel: {
+                unlockedCities: [],
+                cities: [
+                    { id: 1, name: '北京', icon: '🏛️', desc: '故宫、长城、天安门' },
+                    { id: 2, name: '上海', icon: '🏙️', desc: '东方明珠、外滩、迪士尼' },
+                    { id: 3, name: '西安', icon: '🗿', desc: '兵马俑、古城墙、大雁塔' },
+                    { id: 4, name: '成都', icon: '🐼', desc: '大熊猫基地、宽窄巷子' },
+                    { id: 5, name: '杭州', icon: '🌊', desc: '西湖、灵隐寺、宋城' },
+                    { id: 6, name: '桂林', icon: '⛰️', desc: '漓江、象鼻山、阳朔' },
+                    { id: 7, name: '三亚', icon: '🏖️', desc: '天涯海角、亚龙湾、蜈支洲岛' },
+                    { id: 8, name: '丽江', icon: '🏔️', desc: '古城、玉龙雪山、泸沽湖' },
+                    { id: 9, name: '厦门', icon: '🌴', desc: '鼓浪屿、南普陀寺、环岛路' },
+                    { id: 10, name: '青岛', icon: '🍺', desc: '栈桥、八大关、崂山' },
+                    { id: 11, name: '苏州', icon: '🏯', desc: '园林、周庄、寒山寺' },
+                    { id: 12, name: '张家界', icon: '🌲', desc: '天门山、玻璃栈道、黄龙洞' }
+                ]
+            }
+        };
+
+        // 番茄钟变量
+        let pomodoroTimer = null;
+        let pomodoroSeconds = 25 * 60; // 25分钟
+        let pomodoroRunning = false;
+        let pomodoroMode = 'work'; // 'work' 或 'break'
+
+        // 初始化
+        function init() {
+            loadData();
+            updateDate();
+            updateDashboard();
+            renderHomework();
+            renderBooks();
+            renderPlans();
+            updatePomodoroStats();
+            updatePointsDisplay();
+            renderPointsHistory();
+            renderSchedule();
+            renderCities();
+            renderTestRecords();
+            updateTestStats();
+            renderSportsRecords();
+            updateSportsStats();
+        }
+
+        // 加载数据
+        function loadData() {
+            const saved = localStorage.getItem('winterStudyData');
+            if (saved) {
+                data = JSON.parse(saved);
+                // 确保番茄钟数据存在
+                if (!data.pomodoros) {
+                    data.pomodoros = { today: 0, totalTime: 0, lastDate: null };
+                }
+                // 确保积分数据存在
+                if (!data.points) {
+                    data.points = { total: 0, history: [] };
+                }
+                // 确保作息表数据存在
+                if (!data.schedule) {
+                    data.schedule = [];
+                }
+                // 确保旅游数据存在
+                if (!data.travel) {
+                    data.travel = {
+                        unlockedCities: [],
+                        cities: [
+                            { id: 1, name: '北京', icon: '🏛️', desc: '故宫、长城、天安门' },
+                            { id: 2, name: '上海', icon: '🏙️', desc: '东方明珠、外滩、迪士尼' },
+                            { id: 3, name: '西安', icon: '🗿', desc: '兵马俑、古城墙、大雁塔' },
+                            { id: 4, name: '成都', icon: '🐼', desc: '大熊猫基地、宽窄巷子' },
+                            { id: 5, name: '杭州', icon: '🌊', desc: '西湖、灵隐寺、宋城' },
+                            { id: 6, name: '桂林', icon: '⛰️', desc: '漓江、象鼻山、阳朔' },
+                            { id: 7, name: '三亚', icon: '🏖️', desc: '天涯海角、亚龙湾、蜈支洲岛' },
+                            { id: 8, name: '丽江', icon: '🏔️', desc: '古城、玉龙雪山、泸沽湖' },
+                            { id: 9, name: '厦门', icon: '🌴', desc: '鼓浪屿、南普陀寺、环岛路' },
+                            { id: 10, name: '青岛', icon: '🍺', desc: '栈桥、八大关、崂山' },
+                            { id: 11, name: '苏州', icon: '🏯', desc: '园林、周庄、寒山寺' },
+                            { id: 12, name: '张家界', icon: '🌲', desc: '天门山、玻璃栈道、黄龙洞' }
+                        ]
+                    };
+                }
+            }
+
+            // 确保测试数据存在
+            if (!data.tests) {
+                data.tests = {
+                    records: [],
+                    totalPoints: 0
+                };
+            }
+
+            // 确保运动数据存在
+            if (!data.sports) {
+                data.sports = {
+                    badminton: { records: [], totalMinutes: 0, totalPoints: 0 },
+                    tennis: { records: [], totalMinutes: 0, totalPoints: 0 }
+                };
+            }
+
+            // 如果是第一次使用，初始化默认作息表
+            if (!data.schedule || data.schedule.length === 0) {
+                data.schedule = [
+                    { id: Date.now() + 1, time: '07:00', activity: '起床洗漱', completed: false },
+                    { id: Date.now() + 2, time: '07:30', activity: '早餐', completed: false },
+                    { id: Date.now() + 3, time: '08:00', activity: '晨读/背单词', completed: false },
+                    { id: Date.now() + 4, time: '09:00', activity: '作业时间（数学）', completed: false },
+                    { id: Date.now() + 5, time: '10:30', activity: '休息/运动', completed: false },
+                    { id: Date.now() + 6, time: '11:00', activity: '作业时间（语文）', completed: false },
+                    { id: Date.now() + 7, time: '12:00', activity: '午餐', completed: false },
+                    { id: Date.now() + 8, time: '13:00', activity: '午休', completed: false },
+                    { id: Date.now() + 9, time: '14:00', activity: '阅读时间', completed: false },
+                    { id: Date.now() + 10, time: '15:30', activity: '作业时间（英语）', completed: false },
+                    { id: Date.now() + 11, time: '17:00', activity: '自由活动', completed: false },
+                    { id: Date.now() + 12, time: '18:00', activity: '晚餐', completed: false },
+                    { id: Date.now() + 13, time: '19:00', activity: '复习/预习', completed: false },
+                    { id: Date.now() + 14, time: '20:00', activity: '游戏/娱乐时间', completed: false },
+                    { id: Date.now() + 15, time: '21:00', activity: '洗漱准备睡觉', completed: false },
+                    { id: Date.now() + 16, time: '21:30', activity: '睡觉', completed: false }
+                ];
+                saveData();
+            }
+
+            // 检查是否是新的一天
+            const today = new Date().toDateString();
+            if (data.lastVisit !== today) {
+                data.studyDays++;
+                data.lastVisit = today;
+                // 重置作息表的完成状态
+                data.schedule.forEach(item => item.completed = false);
+                saveData();
+            }
+
+            // 重置每日番茄钟计数
+            if (data.pomodoros.lastDate !== today) {
+                data.pomodoros.today = 0;
+                data.pomodoros.lastDate = today;
+                saveData();
+            }
+        }
+
+        // 保存数据
+        function saveData() {
+            localStorage.setItem('winterStudyData', JSON.stringify(data));
+        }
+
+        // 更新日期显示
+        function updateDate() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('dateInfo').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+
+        // 切换标签页
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // 更新总览页面
+        function updateDashboard() {
+            const pendingHomework = data.homework.filter(h => !h.completed).length;
+            document.getElementById('totalHomework').textContent = pendingHomework;
+            document.getElementById('totalBooks').textContent = data.books.length;
+            document.getElementById('studyDays').textContent = data.studyDays;
+            document.getElementById('completedTasks').textContent = data.completedTasks;
+            document.getElementById('totalPoints').textContent = data.points.total;
+
+            // 更新作息完成情况
+            const totalSchedule = data.schedule.length;
+            const completedSchedule = data.schedule.filter(s => s.completed).length;
+            const scheduleRate = totalSchedule > 0 ? Math.round((completedSchedule / totalSchedule) * 100) : 0;
+
+            document.getElementById('completedSchedule').textContent = completedSchedule;
+            document.getElementById('totalSchedule').textContent = totalSchedule;
+            document.getElementById('scheduleRate').textContent = scheduleRate;
+            document.getElementById('scheduleProgressBar').style.width = scheduleRate + '%';
+            document.getElementById('scheduleProgressBar').textContent = scheduleRate + '%';
+
+            // 根据完成率显示不同的emoji
+            let emoji = '📋';
+            if (scheduleRate === 100) {
+                emoji = '🎉';
+            } else if (scheduleRate >= 80) {
+                emoji = '😊';
+            } else if (scheduleRate >= 50) {
+                emoji = '💪';
+            } else if (scheduleRate > 0) {
+                emoji = '📝';
+            }
+            document.getElementById('scheduleEmoji').textContent = emoji;
+
+            // 今日任务
+            const todayTasks = document.getElementById('todayTasks');
+            const today = new Date().toDateString();
+            const todayHomework = data.homework.filter(h => {
+                return !h.completed && new Date(h.deadline).toDateString() === today;
+            });
+
+            if (todayHomework.length === 0) {
+                todayTasks.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✅</div><p>今天没有待完成的作业</p></div>';
+            } else {
+                todayTasks.innerHTML = todayHomework.map(h => `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">${h.subject} - ${h.title}</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-success btn-small" onclick="completeHomework(${h.id})">完成</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // 阅读进度
+            const readingProgress = document.getElementById('readingProgress');
+            if (data.books.length === 0) {
+                readingProgress.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><p>还没有添加书籍</p></div>';
+            } else {
+                readingProgress.innerHTML = data.books.slice(0, 3).map(book => {
+                    const progress = (book.currentPage / book.totalPages * 100).toFixed(1);
+                    return `
+                        <div class="book-item">
+                            <div class="book-info">
+                                <div class="book-title">${book.title}</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${progress}%">${progress}%</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // 作业管理
+        function addHomework() {
+            const title = document.getElementById('homeworkTitle').value.trim();
+            const subject = document.getElementById('homeworkSubject').value;
+            const desc = document.getElementById('homeworkDesc').value.trim();
+            const deadline = document.getElementById('homeworkDeadline').value;
+
+            if (!title) {
+                alert('请输入作业标题');
+                return;
+            }
+
+            if (!deadline) {
+                alert('请选择截止日期');
+                return;
+            }
+
+            const homework = {
+                id: Date.now(),
+                title,
+                subject,
+                desc,
+                deadline,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+
+            data.homework.push(homework);
+            saveData();
+            renderHomework();
+            updateDashboard();
+
+            // 清空输入
+            document.getElementById('homeworkTitle').value = '';
+            document.getElementById('homeworkDesc').value = '';
+            document.getElementById('homeworkDeadline').value = '';
+        }
+
+        function renderHomework() {
+            const list = document.getElementById('homeworkList');
+            const pending = data.homework.filter(h => !h.completed);
+            const completed = data.homework.filter(h => h.completed);
+
+            if (data.homework.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📝</div><p>还没有添加作业</p></div>';
+                return;
+            }
+
+            let html = '';
+
+            if (pending.length > 0) {
+                html += '<h4 style="color: #667eea; margin-bottom: 15px;">待完成</h4>';
+                html += pending.map(h => `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">${h.subject} - ${h.title}</span>
+                            <span style="color: #dc3545;">📅 ${h.deadline}</span>
+                        </div>
+                        ${h.desc ? `<div class="card-content">${h.desc}</div>` : ''}
+                        <div class="card-actions">
+                            <button class="btn btn-success btn-small" onclick="completeHomework(${h.id})">完成</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteHomework(${h.id})">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            if (completed.length > 0) {
+                html += '<h4 style="color: #28a745; margin: 20px 0 15px;">已完成</h4>';
+                html += completed.map(h => `
+                    <div class="card completed">
+                        <div class="card-header">
+                            <span class="card-title">✅ ${h.subject} - ${h.title}</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-danger btn-small" onclick="deleteHomework(${h.id})">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            list.innerHTML = html;
+        }
+
+        function completeHomework(id) {
+            const homework = data.homework.find(h => h.id === id);
+            if (homework) {
+                homework.completed = true;
+                data.completedTasks++;
+                addPoints(10, '完成作业: ' + homework.title);
+                saveData();
+                renderHomework();
+                updateDashboard();
+                showPointsNotification('+10 积分');
+            }
+        }
+
+        function deleteHomework(id) {
+            if (confirm('确定要删除这个作业吗？')) {
+                data.homework = data.homework.filter(h => h.id !== id);
+                saveData();
+                renderHomework();
+                updateDashboard();
+            }
+        }
+
+        // 阅读管理
+        function addBook() {
+            const title = document.getElementById('bookTitle').value.trim();
+            const author = document.getElementById('bookAuthor').value.trim();
+            const totalPages = parseInt(document.getElementById('bookPages').value);
+            const totalWords = parseInt(document.getElementById('bookWords').value) || 0;
+
+            if (!title) {
+                alert('请输入书名');
+                return;
+            }
+
+            if (!totalPages || totalPages < 1) {
+                alert('请输入有效的总页数');
+                return;
+            }
+
+            const book = {
+                id: Date.now(),
+                title,
+                author: author || '未知作者',
+                totalPages,
+                totalWords,
+                currentPage: 0,
+                createdAt: new Date().toISOString()
+            };
+
+            data.books.push(book);
+            saveData();
+            renderBooks();
+            updateDashboard();
+
+            // 清空输入
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('bookAuthor').value = '';
+            document.getElementById('bookPages').value = '';
+            document.getElementById('bookWords').value = '';
+        }
+
+        function renderBooks() {
+            const list = document.getElementById('bookList');
+
+            if (data.books.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><p>还没有添加书籍，快来添加你的寒假书单吧！</p></div>';
+                return;
+            }
+
+            list.innerHTML = data.books.map(book => {
+                const progress = (book.currentPage / book.totalPages * 100).toFixed(1);
+                const isCompleted = book.currentPage >= book.totalPages;
+
+                // 计算已读字数
+                let wordInfo = '';
+                if (book.totalWords && book.totalWords > 0) {
+                    const currentWords = Math.floor((book.currentPage / book.totalPages) * book.totalWords);
+                    wordInfo = `<div style="font-size: 14px; color: #666; margin-top: 5px;">
+                        已读字数: ${currentWords.toLocaleString()} / ${book.totalWords.toLocaleString()} 字
+                    </div>`;
+                }
+
+                return `
+                    <div class="card ${isCompleted ? 'completed' : ''}">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">${isCompleted ? '✅ ' : ''}${book.title}</div>
+                                <div style="color: #666; font-size: 14px;">作者: ${book.author}</div>
+                                ${wordInfo}
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 14px; color: #666;">
+                                    ${book.currentPage} / ${book.totalPages} 页
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%">${progress}%</div>
+                        </div>
+                        <div class="card-actions">
+                            <input type="number" id="page-${book.id}" placeholder="当前页数"
+                                   min="0" max="${book.totalPages}" value="${book.currentPage}"
+                                   style="width: 120px; padding: 6px; border: 2px solid #dee2e6; border-radius: 5px;">
+                            <button class="btn btn-success btn-small" onclick="updateBookProgress(${book.id})">更新进度</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteBook(${book.id})">删除</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateBookProgress(id) {
+            const book = data.books.find(b => b.id === id);
+            const newPage = parseInt(document.getElementById(`page-${id}`).value);
+
+            if (book && newPage >= 0 && newPage <= book.totalPages) {
+                const wasCompleted = book.currentPage >= book.totalPages;
+                book.currentPage = newPage;
+                const isNowCompleted = book.currentPage >= book.totalPages;
+
+                // 如果刚刚完成阅读，给予20积分
+                if (!wasCompleted && isNowCompleted) {
+                    addPoints(20, '读完书籍: ' + book.title);
+                    showPointsNotification('+20 积分 - 读完一本书！');
+                } else {
+                    // 更新进度给予2积分
+                    addPoints(2, '更新阅读进度: ' + book.title);
+                    showPointsNotification('+2 积分');
+                }
+
+                saveData();
+                renderBooks();
+                updateDashboard();
+            } else {
+                alert('请输入有效的页数');
+            }
+        }
+
+        function deleteBook(id) {
+            if (confirm('确定要删除这本书吗？')) {
+                data.books = data.books.filter(b => b.id !== id);
+                saveData();
+                renderBooks();
+                updateDashboard();
+            }
+        }
+
+        // 学习计划管理
+        function addPlan() {
+            const title = document.getElementById('planTitle').value.trim();
+            const type = document.getElementById('planType').value;
+
+            if (!title) {
+                alert('请输入计划标题');
+                return;
+            }
+
+            const plan = {
+                id: Date.now(),
+                title,
+                type,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+
+            data.plans.push(plan);
+            saveData();
+            renderPlans();
+
+            document.getElementById('planTitle').value = '';
+        }
+
+        function renderPlans() {
+            const list = document.getElementById('planList');
+
+            if (data.plans.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📅</div><p>还没有制定学习计划</p></div>';
+                return;
+            }
+
+            const pending = data.plans.filter(p => !p.completed);
+            const completed = data.plans.filter(p => p.completed);
+
+            let html = '';
+
+            if (pending.length > 0) {
+                html += '<h4 style="color: #667eea; margin-bottom: 15px;">进行中</h4>';
+                html += pending.map(p => {
+                    const typeLabel = {daily: '每日', weekly: '每周', custom: '自定义'}[p.type];
+                    return `
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">${p.title}</span>
+                                <span style="background: #667eea; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px;">
+                                    ${typeLabel}
+                                </span>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn btn-success btn-small" onclick="completePlan(${p.id})">完成</button>
+                                <button class="btn btn-danger btn-small" onclick="deletePlan(${p.id})">删除</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            if (completed.length > 0) {
+                html += '<h4 style="color: #28a745; margin: 20px 0 15px;">已完成</h4>';
+                html += completed.map(p => `
+                    <div class="card completed">
+                        <div class="card-header">
+                            <span class="card-title">✅ ${p.title}</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-danger btn-small" onclick="deletePlan(${p.id})">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            list.innerHTML = html;
+        }
+
+        function completePlan(id) {
+            const plan = data.plans.find(p => p.id === id);
+            if (plan) {
+                plan.completed = true;
+                data.completedTasks++;
+                addPoints(8, '完成计划: ' + plan.title);
+                saveData();
+                renderPlans();
+                updateDashboard();
+                showPointsNotification('+8 积分');
+            }
+        }
+
+        function deletePlan(id) {
+            if (confirm('确定要删除这个计划吗？')) {
+                data.plans = data.plans.filter(p => p.id !== id);
+                saveData();
+                renderPlans();
+            }
+        }
+
+        // 打开注意力训练
+        function openTraining() {
+            window.open('attention-training.html', '_blank');
+        }
+
+        // 番茄钟功能
+        function updatePomodoroDisplay() {
+            const minutes = Math.floor(pomodoroSeconds / 60);
+            const seconds = pomodoroSeconds % 60;
+            document.getElementById('pomodoroTimer').textContent =
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updatePomodoroStats() {
+            document.getElementById('todayPomodoros').textContent = data.pomodoros.today;
+            document.getElementById('totalStudyTime').textContent = data.pomodoros.totalTime;
+        }
+
+        function startPomodoro() {
+            if (pomodoroRunning) return;
+
+            pomodoroRunning = true;
+            document.getElementById('pomodoroStatus').textContent =
+                pomodoroMode === 'work' ? '🎯 专注学习中...' : '☕ 休息时间';
+
+            pomodoroTimer = setInterval(() => {
+                pomodoroSeconds--;
+                updatePomodoroDisplay();
+
+                if (pomodoroSeconds <= 0) {
+                    clearInterval(pomodoroTimer);
+                    pomodoroRunning = false;
+                    completePomodoroSession();
+                }
+            }, 1000);
+        }
+
+        function pausePomodoro() {
+            if (pomodoroTimer) {
+                clearInterval(pomodoroTimer);
+                pomodoroRunning = false;
+                document.getElementById('pomodoroStatus').textContent = '⏸️ 已暂停';
+            }
+        }
+
+        function resetPomodoro() {
+            if (pomodoroTimer) {
+                clearInterval(pomodoroTimer);
+            }
+            pomodoroRunning = false;
+            pomodoroMode = 'work';
+            pomodoroSeconds = 25 * 60;
+            updatePomodoroDisplay();
+            document.getElementById('pomodoroStatus').textContent = '准备开始学习';
+        }
+
+        function completePomodoroSession() {
+            // 播放提示音（使用Web Audio API）
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+
+            if (pomodoroMode === 'work') {
+                // 完成一个工作番茄钟
+                data.pomodoros.today++;
+                data.pomodoros.totalTime += 25;
+                addPoints(5, '完成番茄钟');
+                saveData();
+                updatePomodoroStats();
+                showPointsNotification('+5 积分');
+
+                alert('🎉 太棒了！完成了一个番茄钟！\n获得 +5 积分\n现在休息5分钟吧~');
+                pomodoroMode = 'break';
+                pomodoroSeconds = 5 * 60;
+                document.getElementById('pomodoroStatus').textContent = '☕ 准备休息';
+            } else {
+                // 完成休息
+                alert('⏰ 休息结束！准备开始下一个番茄钟吧！');
+                pomodoroMode = 'work';
+                pomodoroSeconds = 25 * 60;
+                document.getElementById('pomodoroStatus').textContent = '准备开始学习';
+            }
+            updatePomodoroDisplay();
+        }
+
+        // 积分系统功能
+        function addPoints(amount, reason) {
+            data.points.total += amount;
+            data.points.history.unshift({
+                amount: amount,
+                reason: reason,
+                timestamp: new Date().toISOString(),
+                type: 'earn'
+            });
+            // 只保留最近50条记录
+            if (data.points.history.length > 50) {
+                data.points.history = data.points.history.slice(0, 50);
+            }
+            updatePointsDisplay();
+        }
+
+        function deductPoints(amount, reason) {
+            if (data.points.total >= amount) {
+                data.points.total -= amount;
+                data.points.history.unshift({
+                    amount: -amount,
+                    reason: reason,
+                    timestamp: new Date().toISOString(),
+                    type: 'redeem'
+                });
+                if (data.points.history.length > 50) {
+                    data.points.history = data.points.history.slice(0, 50);
+                }
+                updatePointsDisplay();
+                return true;
+            }
+            return false;
+        }
+
+        function updatePointsDisplay() {
+            document.getElementById('headerPoints').textContent = data.points.total;
+            document.getElementById('currentPoints').textContent = data.points.total;
+        }
+
+        function showPointsNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'achievement-badge';
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.top = '100px';
+            notification.style.right = '20px';
+            notification.style.zIndex = '9999';
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        function renderPointsHistory() {
+            const container = document.getElementById('pointsHistory');
+            if (!data.points.history || data.points.history.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📜</div><p>还没有积分记录</p></div>';
+                return;
+            }
+
+            container.innerHTML = data.points.history.map(record => {
+                const date = new Date(record.timestamp);
+                const dateStr = date.toLocaleDateString('zh-CN') + ' ' + date.toLocaleTimeString('zh-CN', {hour: '2-digit', minute: '2-digit'});
+                const isPositive = record.amount > 0;
+
+                return `
+                    <div class="history-item ${isPositive ? '' : 'negative'}">
+                        <div>
+                            <div style="font-weight: bold; margin-bottom: 5px;">${record.reason}</div>
+                            <div style="font-size: 12px; color: #999;">${dateStr}</div>
+                        </div>
+                        <div class="history-points ${isPositive ? 'positive' : 'negative'}">
+                            ${isPositive ? '+' : ''}${record.amount}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function redeemReward(type, cost, value) {
+            if (data.points.total < cost) {
+                alert('积分不足！还需要 ' + (cost - data.points.total) + ' 积分');
+                return;
+            }
+
+            let message = '';
+            if (type === 'money') {
+                message = `确定要兑换 ${value} 元零花钱吗？\n将消耗 ${cost} 积分`;
+            } else if (type === 'game') {
+                message = `确定要兑换 ${value} 分钟游戏时间吗？\n将消耗 ${cost} 积分`;
+            }
+
+            if (confirm(message)) {
+                const reason = type === 'money' ? `兑换零花钱 ${value}元` : `兑换游戏时间 ${value}分钟`;
+                if (deductPoints(cost, reason)) {
+                    saveData();
+                    renderPointsHistory();
+                    alert(`🎉 兑换成功！\n${reason}\n剩余积分: ${data.points.total}`);
+                }
+            }
+        }
+
+        // 作息表功能
+        function addScheduleItem() {
+            const time = document.getElementById('scheduleTime').value;
+            const activity = document.getElementById('scheduleActivity').value.trim();
+
+            if (!time || !activity) {
+                alert('请输入时间和活动内容');
+                return;
+            }
+
+            const scheduleItem = {
+                id: Date.now(),
+                time: time,
+                activity: activity,
+                completed: false
+            };
+
+            data.schedule.push(scheduleItem);
+            // 按时间排序
+            data.schedule.sort((a, b) => a.time.localeCompare(b.time));
+            saveData();
+            renderSchedule();
+
+            // 清空输入
+            document.getElementById('scheduleActivity').value = '';
+        }
+
+        function renderSchedule() {
+            const list = document.getElementById('scheduleList');
+
+            if (data.schedule.length === 0) {
+                list.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">还没有添加作息安排，点击上方添加按钮开始规划你的一天吧！</div>';
+                return;
+            }
+
+            list.innerHTML = data.schedule.map(item => `
+                <div class="schedule-item ${item.completed ? 'completed' : ''}">
+                    <div class="schedule-time">${item.time}</div>
+                    <div class="schedule-activity">${item.activity}</div>
+                    <div class="schedule-actions">
+                        <div class="schedule-check ${item.completed ? 'checked' : ''}"
+                             onclick="toggleScheduleItem(${item.id})"></div>
+                        <button class="btn btn-danger btn-small" onclick="deleteScheduleItem(${item.id})">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleScheduleItem(id) {
+            const item = data.schedule.find(s => s.id === id);
+            if (item) {
+                const wasCompleted = item.completed;
+                item.completed = !item.completed;
+
+                // 如果从未完成变为完成，给予积分奖励
+                if (!wasCompleted && item.completed) {
+                    addPoints(1, '完成作息项: ' + item.activity);
+                    showPointsNotification('+1 积分');
+                }
+
+                saveData();
+                renderSchedule();
+                updateDashboard();
+            }
+        }
+
+        function deleteScheduleItem(id) {
+            if (confirm('确定要删除这个作息项吗？')) {
+                data.schedule = data.schedule.filter(s => s.id !== id);
+                saveData();
+                renderSchedule();
+            }
+        }
+
+        // 探索世界功能
+        function renderCities() {
+            const grid = document.getElementById('citiesGrid');
+            if (!grid) return;
+
+            document.getElementById('unlockedCities').textContent = data.travel.unlockedCities.length;
+            document.getElementById('travelPoints').textContent = data.points.total;
+
+            grid.innerHTML = data.travel.cities.map(city => {
+                const isUnlocked = data.travel.unlockedCities.includes(city.id);
+                return `
+                    <div class="city-card ${isUnlocked ? 'unlocked' : ''}">
+                        <div class="city-icon">${city.icon}</div>
+                        <div class="city-name">${city.name}</div>
+                        <div class="city-desc">${city.desc}</div>
+                        <div class="city-status ${isUnlocked ? 'unlocked' : 'locked'}">
+                            ${isUnlocked ? '✅ 已解锁' : '🔒 未解锁'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function redeemTravel() {
+            const cost = 5000;
+            if (data.points.total < cost) {
+                alert(`积分不足！还需要 ${cost - data.points.total} 积分\n\n💡 继续努力学习吧！`);
+                return;
+            }
+
+            // 获取未解锁的城市
+            const lockedCities = data.travel.cities.filter(city =>
+                !data.travel.unlockedCities.includes(city.id)
+            );
+
+            if (lockedCities.length === 0) {
+                alert('🎉 恭喜！你已经解锁了所有城市！');
+                return;
+            }
+
+            // 创建城市选择对话框
+            let cityOptions = lockedCities.map((city, index) =>
+                `${index + 1}. ${city.icon} ${city.name} - ${city.desc}`
+            ).join('\n');
+
+            let message = `🎉 恭喜！你可以选择一个城市解锁！\n\n${cityOptions}\n\n请输入城市编号（1-${lockedCities.length}）：`;
+            let choice = prompt(message);
+
+            if (choice) {
+                const index = parseInt(choice) - 1;
+                if (index >= 0 && index < lockedCities.length) {
+                    const selectedCity = lockedCities[index];
+
+                    if (confirm(`确定要解锁 ${selectedCity.icon} ${selectedCity.name} 吗？\n将消耗 ${cost} 积分`)) {
+                        data.travel.unlockedCities.push(selectedCity.id);
+                        deductPoints(cost, `解锁旅游城市: ${selectedCity.name}`);
+                        saveData();
+                        renderCities();
+                        renderPointsHistory();
+
+                        alert(`🎊 太棒了！\n\n你成功解锁了 ${selectedCity.icon} ${selectedCity.name}！\n\n${selectedCity.desc}\n\n和家人一起计划这次旅行吧！✈️`);
+                    }
+                } else {
+                    alert('输入无效，请重试');
+                }
+            }
+        }
+
+        // 学习测试功能
+        function startTest(subject) {
+            const score = prompt(`📋 ${subject}测试\n\n请输入本次测试成绩（0-100分）：`);
+
+            if (score === null) return;
+
+            const scoreNum = parseInt(score);
+            if (isNaN(scoreNum) || scoreNum < 0 || scoreNum > 100) {
+                alert('请输入有效的分数（0-100）');
+                return;
+            }
+
+            // 计算积分奖励
+            let points = 0;
+            let level = '';
+            if (scoreNum >= 90) {
+                points = 30;
+                level = 'excellent';
+            } else if (scoreNum >= 80) {
+                points = 20;
+                level = 'good';
+            } else if (scoreNum >= 60) {
+                points = 10;
+                level = 'good';
+            } else {
+                points = 5;
+                level = 'poor';
+            }
+
+            // 记录测试
+            const testRecord = {
+                id: Date.now(),
+                subject: subject,
+                score: scoreNum,
+                level: level,
+                points: points,
+                date: new Date().toISOString()
+            };
+
+            if (!data.tests) {
+                data.tests = { records: [], totalPoints: 0 };
+            }
+
+            data.tests.records.unshift(testRecord);
+            data.tests.totalPoints += points;
+
+            // 添加积分
+            addPoints(points, `${subject}测试 - ${scoreNum}分`);
+
+            saveData();
+            renderTestRecords();
+            updateTestStats();
+
+            // 显示结果
+            let message = '';
+            if (scoreNum >= 90) {
+                message = `🎉 优秀！\n\n${subject}测试得分：${scoreNum}分\n获得积分：+${points}\n\n继续保持！`;
+            } else if (scoreNum >= 80) {
+                message = `👍 良好！\n\n${subject}测试得分：${scoreNum}分\n获得积分：+${points}\n\n再接再厉！`;
+            } else if (scoreNum >= 60) {
+                message = `💪 及格！\n\n${subject}测试得分：${scoreNum}分\n获得积分：+${points}\n\n继续努力！`;
+            } else {
+                message = `📖 需要加油！\n\n${subject}测试得分：${scoreNum}分\n获得积分：+${points}\n\n多复习，下次会更好！`;
+            }
+
+            alert(message);
+            showPointsNotification(`+${points} 积分`);
+        }
+
+        function renderTestRecords() {
+            const container = document.getElementById('testRecords');
+            if (!container) return;
+
+            if (!data.tests || !data.tests.records || data.tests.records.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><p>还没有测试记录，快去参加测试吧！</p></div>';
+                return;
+            }
+
+            container.innerHTML = data.tests.records.map(record => {
+                const date = new Date(record.date);
+                const dateStr = date.toLocaleDateString('zh-CN') + ' ' + date.toLocaleTimeString('zh-CN', {hour: '2-digit', minute: '2-digit'});
+
+                return `
+                    <div class="test-record ${record.level}">
+                        <div>
+                            <div style="font-weight: bold; font-size: 18px; margin-bottom: 5px;">
+                                ${record.subject}测试
+                            </div>
+                            <div style="font-size: 14px; color: #666;">
+                                ${dateStr} · 获得 ${record.points} 积分
+                            </div>
+                        </div>
+                        <div class="test-score ${record.level}">
+                            ${record.score}分
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateTestStats() {
+            if (!data.tests || !data.tests.records) {
+                data.tests = { records: [], totalPoints: 0 };
+            }
+
+            const totalTests = data.tests.records.length;
+            const avgScore = totalTests > 0
+                ? Math.round(data.tests.records.reduce((sum, r) => sum + r.score, 0) / totalTests)
+                : 0;
+            const excellentCount = data.tests.records.filter(r => r.score >= 90).length;
+
+            document.getElementById('totalTests').textContent = totalTests;
+            document.getElementById('avgScore').textContent = avgScore;
+            document.getElementById('excellentCount').textContent = excellentCount;
+            document.getElementById('testPoints').textContent = data.tests.totalPoints;
+        }
+
+        // 运动提升功能
+        function addTraining(sport) {
+            const sportName = sport === 'badminton' ? '羽毛球' : '网球';
+            const duration = parseInt(document.getElementById(`${sport}Duration`).value);
+            const type = document.getElementById(`${sport}Type`).value;
+            const note = document.getElementById(`${sport}Note`).value.trim();
+
+            if (!duration || duration < 1) {
+                alert('请输入有效的训练时长');
+                return;
+            }
+
+            // 计算积分
+            let points = 0;
+            if (duration >= 90) {
+                points = 20;
+            } else if (duration >= 60) {
+                points = 15;
+            } else if (duration >= 30) {
+                points = 10;
+            } else {
+                points = 5;
+            }
+
+            // 创建训练记录
+            const record = {
+                id: Date.now(),
+                type: type,
+                duration: duration,
+                note: note,
+                points: points,
+                date: new Date().toISOString()
+            };
+
+            // 保存记录
+            if (!data.sports[sport]) {
+                data.sports[sport] = { records: [], totalMinutes: 0, totalPoints: 0 };
+            }
+
+            data.sports[sport].records.unshift(record);
+            data.sports[sport].totalMinutes += duration;
+            data.sports[sport].totalPoints += points;
+
+            // 添加积分
+            addPoints(points, `${sportName}训练 - ${duration}分钟`);
+
+            saveData();
+            renderSportsRecords();
+            updateSportsStats();
+
+            // 清空输入
+            document.getElementById(`${sport}Duration`).value = '';
+            document.getElementById(`${sport}Note`).value = '';
+
+            // 显示提示
+            alert(`🎉 训练记录成功！\n\n${sportName} - ${type}\n训练时长：${duration}分钟\n获得积分：+${points}\n\n继续加油！💪`);
+            showPointsNotification(`+${points} 积分`);
+        }
+
+        function renderSportsRecords() {
+            // 渲染羽毛球记录
+            renderSportRecords('badminton', '🏸');
+            // 渲染网球记录
+            renderSportRecords('tennis', '🎾');
+        }
+
+        function renderSportRecords(sport, icon) {
+            const container = document.getElementById(`${sport}Records`);
+            if (!container) return;
+
+            if (!data.sports || !data.sports[sport] || !data.sports[sport].records || data.sports[sport].records.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 15px; color: #999; font-size: 14px;">还没有训练记录</div>';
+                return;
+            }
+
+            // 只显示最近5条
+            const recentRecords = data.sports[sport].records.slice(0, 5);
+
+            container.innerHTML = recentRecords.map(record => {
+                const date = new Date(record.date);
+                const dateStr = date.toLocaleDateString('zh-CN', {month: 'numeric', day: 'numeric'});
+
+                return `
+                    <div class="training-record-item">
+                        <div>
+                            <div style="font-weight: bold; margin-bottom: 5px;">
+                                ${icon} ${record.type}
+                            </div>
+                            <div style="font-size: 12px; color: #666;">
+                                ${dateStr} · ${record.duration}分钟
+                                ${record.note ? ' · ' + record.note : ''}
+                            </div>
+                        </div>
+                        <div class="training-badge">+${record.points}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateSportsStats() {
+            if (!data.sports) {
+                data.sports = {
+                    badminton: { records: [], totalMinutes: 0, totalPoints: 0 },
+                    tennis: { records: [], totalMinutes: 0, totalPoints: 0 }
+                };
+            }
+
+            // 更新羽毛球统计
+            const badmintonCount = data.sports.badminton.records.length;
+            const badmintonHours = (data.sports.badminton.totalMinutes / 60).toFixed(1);
+            document.getElementById('badmintonCount').textContent = badmintonCount;
+            document.getElementById('badmintonHours').textContent = badmintonHours;
+
+            // 更新网球统计
+            const tennisCount = data.sports.tennis.records.length;
+            const tennisHours = (data.sports.tennis.totalMinutes / 60).toFixed(1);
+            document.getElementById('tennisCount').textContent = tennisCount;
+            document.getElementById('tennisHours').textContent = tennisHours;
+
+            // 更新总体统计
+            const totalTrainings = badmintonCount + tennisCount;
+            const totalMinutes = data.sports.badminton.totalMinutes + data.sports.tennis.totalMinutes;
+            const totalHours = (totalMinutes / 60).toFixed(1);
+            const sportsPoints = data.sports.badminton.totalPoints + data.sports.tennis.totalPoints;
+
+            document.getElementById('totalTrainings').textContent = totalTrainings;
+            document.getElementById('totalHours').textContent = totalHours + 'h';
+            document.getElementById('sportsPoints').textContent = sportsPoints;
+        }
+
+        // 页面加载时初始化
+        window.onload = init;
+    </script>
+</body>
+</html>

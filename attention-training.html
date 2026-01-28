@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小学生注意力训练系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .menu-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 30px 20px;
+            border-radius: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-weight: bold;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .game-area {
+            display: none;
+        }
+
+        .game-area.active {
+            display: block;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
+        /* 舒尔特方格样式 */
+        .schulte-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .schulte-cell {
+            aspect-ratio: 1;
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .schulte-cell:hover {
+            background: #e7f1ff;
+            transform: scale(1.05);
+        }
+
+        .schulte-cell.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .schulte-cell.wrong {
+            background: #dc3545;
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .stats {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .stats span {
+            margin: 0 15px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .start-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            font-weight: bold;
+        }
+
+        .start-btn:hover {
+            background: #218838;
+        }
+
+        /* 记忆卡片样式 */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: #667eea;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05);
+        }
+
+        .memory-card.flipped {
+            background: white;
+            border: 3px solid #667eea;
+        }
+
+        .memory-card.matched {
+            background: #28a745;
+            cursor: default;
+        }
+
+        /* 找不同样式 */
+        .difference-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .difference-image {
+            width: 300px;
+            height: 300px;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            position: relative;
+            background: #f8f9fa;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            padding: 10px;
+        }
+
+        .shape {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .shape:hover {
+            transform: scale(1.1);
+        }
+
+        .shape.different {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .result-message {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .result-message.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .result-message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 小学生注意力训练系统</h1>
+        <p class="subtitle">适合5年级学生 - 提升专注力和反应能力</p>
+
+        <!-- 主菜单 -->
+        <div id="menu" class="menu">
+            <button class="menu-btn" onclick="startGame('schulte')">
+                📊 舒尔特方格<br><small>数字顺序训练</small>
+            </button>
+            <button class="menu-btn" onclick="startGame('memory')">
+                🧠 记忆翻牌<br><small>记忆力训练</small>
+            </button>
+            <button class="menu-btn" onclick="startGame('difference')">
+                🔍 找不同<br><small>观察力训练</small>
+            </button>
+        </div>
+
+        <!-- 舒尔特方格游戏 -->
+        <div id="schulte-game" class="game-area">
+            <button class="back-btn" onclick="backToMenu()">← 返回主菜单</button>
+            <h2 style="text-align: center; color: #667eea;">舒尔特方格训练</h2>
+            <p style="text-align: center; color: #666; margin: 10px 0;">按顺序点击数字 1-25</p>
+            <div class="stats">
+                <span>当前数字: <span id="current-number">1</span></span>
+                <span>用时: <span id="timer">0</span>秒</span>
+            </div>
+            <div id="schulte-grid" class="schulte-grid"></div>
+            <button class="start-btn" onclick="initSchulte()">开始新游戏</button>
+            <div id="schulte-result"></div>
+        </div>
+
+        <!-- 记忆翻牌游戏 -->
+        <div id="memory-game" class="game-area">
+            <button class="back-btn" onclick="backToMenu()">← 返回主菜单</button>
+            <h2 style="text-align: center; color: #667eea;">记忆翻牌游戏</h2>
+            <p style="text-align: center; color: #666; margin: 10px 0;">找出所有相同的卡片</p>
+            <div class="stats">
+                <span>已配对: <span id="matched-pairs">0</span>/8</span>
+                <span>翻牌次数: <span id="flip-count">0</span></span>
+            </div>
+            <div id="memory-grid" class="memory-grid"></div>
+            <button class="start-btn" onclick="initMemory()">开始新游戏</button>
+            <div id="memory-result"></div>
+        </div>
+
+        <!-- 找不同游戏 -->
+        <div id="difference-game" class="game-area">
+            <button class="back-btn" onclick="backToMenu()">← 返回主菜单</button>
+            <h2 style="text-align: center; color: #667eea;">找不同游戏</h2>
+            <p style="text-align: center; color: #666; margin: 10px 0;">找出右边图中不同的形状</p>
+            <div class="stats">
+                <span>已找到: <span id="found-differences">0</span>/3</span>
+            </div>
+            <div id="difference-container" class="difference-container"></div>
+            <button class="start-btn" onclick="initDifference()">开始新游戏</button>
+            <div id="difference-result"></div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentGame = null;
+        let schulteTimer = null;
+        let schulteStartTime = 0;
+        let currentSchulteNumber = 1;
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let flipCount = 0;
+        let differenceItems = [];
+        let foundDifferences = 0;
+
+        // 游戏切换
+        function startGame(game) {
+            document.getElementById('menu').style.display = 'none';
+            document.querySelectorAll('.game-area').forEach(area => {
+                area.classList.remove('active');
+            });
+
+            if (game === 'schulte') {
+                document.getElementById('schulte-game').classList.add('active');
+                initSchulte();
+            } else if (game === 'memory') {
+                document.getElementById('memory-game').classList.add('active');
+                initMemory();
+            } else if (game === 'difference') {
+                document.getElementById('difference-game').classList.add('active');
+                initDifference();
+            }
+            currentGame = game;
+        }
+
+        function backToMenu() {
+            document.getElementById('menu').style.display = 'grid';
+            document.querySelectorAll('.game-area').forEach(area => {
+                area.classList.remove('active');
+            });
+            if (schulteTimer) clearInterval(schulteTimer);
+            currentGame = null;
+        }
+
+        // 舒尔特方格游戏
+        function initSchulte() {
+            currentSchulteNumber = 1;
+            document.getElementById('current-number').textContent = '1';
+            document.getElementById('timer').textContent = '0';
+            document.getElementById('schulte-result').innerHTML = '';
+
+            const grid = document.getElementById('schulte-grid');
+            grid.innerHTML = '';
+
+            // 生成1-25的随机排列
+            const numbers = Array.from({length: 25}, (_, i) => i + 1);
+            shuffleArray(numbers);
+
+            numbers.forEach(num => {
+                const cell = document.createElement('div');
+                cell.className = 'schulte-cell';
+                cell.textContent = num;
+                cell.dataset.number = num;
+                cell.onclick = () => checkSchulteNumber(cell);
+                grid.appendChild(cell);
+            });
+
+            // 开始计时
+            schulteStartTime = Date.now();
+            if (schulteTimer) clearInterval(schulteTimer);
+            schulteTimer = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - schulteStartTime) / 1000);
+                document.getElementById('timer').textContent = elapsed;
+            }, 1000);
+        }
+
+        function showSchulteResult(time) {
+            let message = '';
+            let rating = '';
+            if (time < 30) {
+                rating = '优秀！';
+                message = '你的注意力非常集中！';
+            } else if (time < 45) {
+                rating = '良好！';
+                message = '继续保持，你做得很好！';
+            } else if (time < 60) {
+                rating = '不错！';
+                message = '多练习会更好哦！';
+            } else {
+                rating = '加油！';
+                message = '坚持练习，你会进步的！';
+            }
+
+            document.getElementById('schulte-result').innerHTML = `
+                <div class="result-message success">
+                    <div>${rating}</div>
+                    <div>完成时间: ${time}秒</div>
+                    <div>${message}</div>
+                </div>
+            `;
+        }
+
+        // 记忆翻牌游戏
+        function initMemory() {
+            matchedPairs = 0;
+            flipCount = 0;
+            flippedCards = [];
+            document.getElementById('matched-pairs').textContent = '0';
+            document.getElementById('flip-count').textContent = '0';
+            document.getElementById('memory-result').innerHTML = '';
+
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = '';
+
+            // 8对卡片，使用emoji
+            const emojis = ['🍎', '🍌', '🍇', '🍊', '🍓', '🍉', '🍒', '🥝'];
+            const cards = [...emojis, ...emojis];
+            shuffleArray(cards);
+
+            memoryCards = cards.map((emoji, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.emoji = emoji;
+                card.dataset.index = index;
+                card.onclick = () => flipCard(card);
+                grid.appendChild(card);
+                return { element: card, emoji: emoji, flipped: false, matched: false };
+            });
+        }
+
+        function flipCard(card) {
+            const index = parseInt(card.dataset.index);
+            const cardData = memoryCards[index];
+
+            if (cardData.flipped || cardData.matched || flippedCards.length >= 2) {
+                return;
+            }
+
+            card.classList.add('flipped');
+            card.textContent = cardData.emoji;
+            cardData.flipped = true;
+            flippedCards.push(index);
+            flipCount++;
+            document.getElementById('flip-count').textContent = flipCount;
+
+            if (flippedCards.length === 2) {
+                setTimeout(checkMemoryMatch, 800);
+            }
+        }
+
+        function checkMemoryMatch() {
+            const [index1, index2] = flippedCards;
+            const card1 = memoryCards[index1];
+            const card2 = memoryCards[index2];
+
+            if (card1.emoji === card2.emoji) {
+                card1.matched = true;
+                card2.matched = true;
+                card1.element.classList.add('matched');
+                card2.element.classList.add('matched');
+                matchedPairs++;
+                document.getElementById('matched-pairs').textContent = matchedPairs;
+
+                if (matchedPairs === 8) {
+                    showMemoryResult();
+                }
+            } else {
+                card1.element.classList.remove('flipped');
+                card2.element.classList.remove('flipped');
+                card1.element.textContent = '';
+                card2.element.textContent = '';
+                card1.flipped = false;
+                card2.flipped = false;
+            }
+
+            flippedCards = [];
+        }
+
+        function showMemoryResult() {
+            let rating = '';
+            if (flipCount <= 20) {
+                rating = '记忆力超强！';
+            } else if (flipCount <= 30) {
+                rating = '记忆力很好！';
+            } else {
+                rating = '继续加油！';
+            }
+
+            document.getElementById('memory-result').innerHTML = `
+                <div class="result-message success">
+                    <div>🎉 恭喜完成！</div>
+                    <div>翻牌次数: ${flipCount}次</div>
+                    <div>${rating}</div>
+                </div>
+            `;
+        }
+
+        // 找不同游戏
+        function initDifference() {
+            foundDifferences = 0;
+            document.getElementById('found-differences').textContent = '0';
+            document.getElementById('difference-result').innerHTML = '';
+
+            const container = document.getElementById('difference-container');
+            container.innerHTML = '';
+
+            // 生成两组图形
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B739'];
+            const shapes = [];
+
+            // 生成9个形状
+            for (let i = 0; i < 9; i++) {
+                shapes.push({
+                    color: colors[i],
+                    different: false
+                });
+            }
+
+            // 随机选择3个位置作为不同点
+            const differentIndices = [];
+            while (differentIndices.length < 3) {
+                const idx = Math.floor(Math.random() * 9);
+                if (!differentIndices.includes(idx)) {
+                    differentIndices.push(idx);
+                    shapes[idx].different = true;
+                }
+            }
+
+            // 创建左边图（原图）
+            const leftImage = document.createElement('div');
+            leftImage.className = 'difference-image';
+            leftImage.innerHTML = '<div style="grid-column: 1/-1; text-align: center; font-weight: bold; color: #667eea;">原图</div>';
+
+            shapes.forEach((shape, idx) => {
+                const div = document.createElement('div');
+                div.className = 'shape';
+                div.style.background = shape.color;
+                leftImage.appendChild(div);
+            });
+
+            // 创建右边图（有差异）
+            const rightImage = document.createElement('div');
+            rightImage.className = 'difference-image';
+            rightImage.innerHTML = '<div style="grid-column: 1/-1; text-align: center; font-weight: bold; color: #667eea;">找不同</div>';
+
+            shapes.forEach((shape, idx) => {
+                const div = document.createElement('div');
+                div.className = 'shape';
+                // 如果是不同点，改变颜色
+                if (shape.different) {
+                    const altColor = colors[(colors.indexOf(shape.color) + 5) % colors.length];
+                    div.style.background = altColor;
+                    div.dataset.different = 'true';
+                    div.onclick = () => foundDifference(div);
+                } else {
+                    div.style.background = shape.color;
+                }
+                rightImage.appendChild(div);
+            });
+
+            container.appendChild(leftImage);
+            container.appendChild(rightImage);
+        }
+
+        function foundDifference(element) {
+            if (element.classList.contains('different')) return;
+
+            element.classList.add('different');
+            foundDifferences++;
+            document.getElementById('found-differences').textContent = foundDifferences;
+
+            if (foundDifferences === 3) {
+                setTimeout(() => {
+                    document.getElementById('difference-result').innerHTML = `
+                        <div class="result-message success">
+                            <div>🎉 太棒了！</div>
+                            <div>你找到了所有不同之处！</div>
+                            <div>观察力真敏锐！</div>
+                        </div>
+                    `;
+                }, 500);
+            }
+        }
+
+        // 工具函数：数组随机排序
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+    </script>
+</body>
+</html>
