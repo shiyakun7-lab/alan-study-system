@@ -1993,7 +1993,8 @@
             },
             points: {
                 total: 0,
-                history: []
+                history: [],
+                dailyTasks: {}
             },
             schedule: [],
             travel: {
@@ -2066,7 +2067,11 @@
                 }
                 // 确保积分数据存在
                 if (!data.points) {
-                    data.points = { total: 0, history: [] };
+                    data.points = { total: 0, history: [], dailyTasks: {} };
+                }
+                // 确保每日任务记录存在（兼容旧数据）
+                if (!data.points.dailyTasks) {
+                    data.points.dailyTasks = {};
                 }
                 // 确保作息表数据存在
                 if (!data.schedule) {
@@ -2368,11 +2373,18 @@
             if (homework) {
                 homework.completed = true;
                 data.completedTasks++;
-                addPoints(10, '完成作业: ' + homework.title);
+                // 每天每项作业限制一次积分
+                const today = new Date().toLocaleDateString('zh-CN');
+                const earned = addPoints(10, `完成作业: ${homework.title}`, true);
                 saveData();
                 renderHomework();
                 updateDashboard();
-                showPointsNotification('+10 积分');
+                if (earned) {
+                    showPointsNotification('+10 积分');
+                    showToast(`🎉 完成《${homework.title}》，获得 +10 积分！`);
+                } else {
+                    showToast(`📝 《${homework.title}》今天已获取过积分啦！`);
+                }
             }
         }
 
@@ -2489,14 +2501,20 @@
                 book.currentPage = newPage;
                 const isNowCompleted = book.currentPage >= book.totalPages;
 
-                // 如果刚刚完成阅读，给予20积分
+                // 如果刚刚完成阅读，给予20积分（一次性奖励）
                 if (!wasCompleted && isNowCompleted) {
-                    addPoints(20, '读完书籍: ' + book.title);
+                    addPoints(20, '读完书籍: ' + book.title, false);
                     showPointsNotification('+20 积分 - 读完一本书！');
+                    showToast(`🎉 恭喜读完《${book.title}》，获得 +20 积分！`);
                 } else {
-                    // 更新进度给予2积分
-                    addPoints(2, '更新阅读进度: ' + book.title);
-                    showPointsNotification('+2 积分');
+                    // 更新进度给予2积分（每天每本书限制一次）
+                    const earned = addPoints(2, `阅读进度: ${book.title}`, true);
+                    if (earned) {
+                        showPointsNotification('+2 积分');
+                        showToast(`📖 阅读进度已更新，获得 +2 积分！`);
+                    } else {
+                        showToast(`📖 《${book.title}》今天已获取过积分啦！`);
+                    }
                 }
 
                 saveData();
@@ -2597,11 +2615,17 @@
             if (plan) {
                 plan.completed = true;
                 data.completedTasks++;
-                addPoints(8, '完成计划: ' + plan.title);
+                // 每天每项计划限制一次积分
+                const earned = addPoints(8, `完成计划: ${plan.title}`, true);
                 saveData();
                 renderPlans();
                 updateDashboard();
-                showPointsNotification('+8 积分');
+                if (earned) {
+                    showPointsNotification('+8 积分');
+                    showToast(`🎯 完成《${plan.title}》，获得 +8 积分！`);
+                } else {
+                    showToast(`📝 《${plan.title}》今天已获取过积分啦！`);
+                }
             }
         }
 
@@ -2690,12 +2714,16 @@
                 // 完成一个工作番茄钟
                 data.pomodoros.today++;
                 data.pomodoros.totalTime += 25;
-                addPoints(5, '完成番茄钟');
+                // 每天第一个番茄钟给5分
+                const earned = addPoints(5, '完成番茄钟', true);
                 saveData();
                 updatePomodoroStats();
-                showPointsNotification('+5 积分');
-
-                alert('🎉 太棒了！完成了一个番茄钟！\n获得 +5 积分\n现在休息5分钟吧~');
+                if (earned) {
+                    showPointsNotification('+5 积分');
+                    alert('🎉 太棒了！完成了一个番茄钟！\n获得 +5 积分\n现在休息5分钟吧~');
+                } else {
+                    alert('🎉 完成了一个番茄钟！\n今天已获取过番茄钟积分啦，继续加油！');
+                }
                 pomodoroMode = 'break';
                 pomodoroSeconds = 5 * 60;
                 document.getElementById('pomodoroStatus').textContent = '☕ 准备休息';
@@ -2710,7 +2738,26 @@
         }
 
         // 积分系统功能
-        function addPoints(amount, reason) {
+        function addPoints(amount, reason, checkDailyLimit = true) {
+            // 检查每日限制（默认开启）
+            if (checkDailyLimit) {
+                const today = new Date().toLocaleDateString('zh-CN');
+                if (!data.dailyTasks) {
+                    data.dailyTasks = {};
+                }
+                if (!data.dailyTasks[today]) {
+                    data.dailyTasks[today] = [];
+                }
+
+                // 检查今天是否已经完成过这个任务
+                if (data.dailyTasks[today].includes(reason)) {
+                    return false; // 今天已经获取过积分
+                }
+
+                // 记录今天的任务
+                data.dailyTasks[today].push(reason);
+            }
+
             data.points.total += amount;
             data.points.history.unshift({
                 amount: amount,
@@ -2723,6 +2770,7 @@
                 data.points.history = data.points.history.slice(0, 50);
             }
             updatePointsDisplay();
+            return true;
         }
 
         function deductPoints(amount, reason) {
@@ -2866,10 +2914,14 @@
                 const wasCompleted = item.completed;
                 item.completed = !item.completed;
 
-                // 如果从未完成变为完成，给予积分奖励
+                // 如果从未完成变为完成，给予积分奖励（每日每项限制）
                 if (!wasCompleted && item.completed) {
-                    addPoints(1, '完成作息项: ' + item.activity);
-                    showPointsNotification('+1 积分');
+                    const earned = addPoints(1, `完成作息: ${item.time} ${item.activity}`, true);
+                    if (earned) {
+                        showPointsNotification('+1 积分');
+                    } else {
+                        showToast(`📝 ${item.activity} 今天已获取过积分啦！`);
+                    }
                 }
 
                 saveData();
@@ -3095,10 +3147,12 @@ ${city.desc}
             }
 
             data.tests.records.unshift(testRecord);
-            data.tests.totalPoints += points;
 
-            // 添加积分
-            addPoints(points, `${subject}测试 - ${scoreNum}分`);
+            // 添加积分（每天每个科目限制一次）
+            const earned = addPoints(points, `${subject}测试`, true);
+            if (earned) {
+                data.tests.totalPoints += points;
+            }
 
             saveData();
             renderTestRecords();
@@ -3222,10 +3276,12 @@ ${city.desc}
 
             data.sports[sport].records.unshift(record);
             data.sports[sport].totalMinutes += duration;
-            data.sports[sport].totalPoints += points;
 
-            // 添加积分
-            addPoints(points, `${sportName} - ${duration}分钟`);
+            // 添加积分（每天每项运动类型限制一次）
+            const earned = addPoints(points, `${sportName}-${type}`, true);
+            if (earned) {
+                data.sports[sport].totalPoints += points;
+            }
 
             saveData();
             renderSportsRecords();
@@ -3334,9 +3390,16 @@ ${city.desc}
 
             data.chores.records.unshift(record);
             data.chores.totalCount++;
-            data.chores.totalPoints += points;
 
-            addPoints(points, `完成家务: ${choreName}`);
+            // 尝试添加积分（每日限制）
+            const earned = addPoints(points, `完成家务: ${choreName}`, true);
+            if (earned) {
+                data.chores.totalPoints += points;
+                showToast(`🎉 太棒了！完成 ${choreName}，获得 ${points} 积分！`);
+            } else {
+                showToast(`📝 已记录 ${choreName}，但今天已获取过积分啦！`);
+            }
+
             saveData();
             renderChoreRecords();
             updateChoreStats();
