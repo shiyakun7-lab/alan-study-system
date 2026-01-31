@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alan的自驱进化计划</title>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -35,28 +37,43 @@
             position: relative;
         }
 
-        .points-badge {
+        .sync-status {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
-            animation: pulse-glow 2s infinite;
+            background: rgba(255, 255, 255, 0.9);
+            color: #666;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% { transform: scale(1); box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 8px 25px rgba(245, 87, 108, 0.6); }
+        .sync-status:hover {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
-        .points-badge .points-number {
-            font-size: 24px;
-            margin: 0 5px;
+        .sync-status.syncing {
+            color: #667eea;
+        }
+
+        .sync-status.error {
+            color: #f5576c;
+        }
+
+        .sync-icon {
+            animation: rotate 1s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         h1 {
@@ -1350,8 +1367,9 @@
         <header>
             <h1>🚀 Alan的自驱进化计划</h1>
             <div class="date-info" id="dateInfo"></div>
-            <div class="points-badge">
-                ⭐ <span class="points-number" id="headerPoints">0</span> 积分
+            <div class="sync-status" id="syncStatus" onclick="manualSync()" title="点击手动同步">
+                <span id="syncIcon">☁️</span>
+                <span id="syncText">云端同步</span>
             </div>
         </header>
 
@@ -2022,6 +2040,48 @@
     </div>
 
     <script>
+        // ==================== Supabase 配置 ====================
+        const SUPABASE_URL = 'https://vryhcjblxglvewohkdkf.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_IVAPoaoif9Y0vBTVvq2Qhw_d2Vsbf7R';
+
+        // 初始化 Supabase 客户端
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // 获取或创建设备 ID（用于多设备同步）
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('deviceId');
+            if (!deviceId) {
+                deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('deviceId', deviceId);
+            }
+            return deviceId;
+        }
+
+        // 获取或创建用户 ID
+        function getUserId() {
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                // 首次使用，提示用户输入昵称
+                userId = prompt('欢迎使用！请输入您的昵称（用于多设备同步）：', 'Alan');
+                if (!userId || userId.trim() === '') {
+                    userId = 'user_' + Date.now();
+                }
+                localStorage.setItem('userId', userId);
+            }
+            return userId;
+        }
+
+        const userId = getUserId();
+        const deviceId = getDeviceId();
+
+        // 云端同步状态
+        let syncStatus = {
+            lastSync: null,
+            syncing: false,
+            error: null
+        };
+
         // 数据存储
         let data = {
             homework: [],
@@ -2080,8 +2140,8 @@
         let pomodoroMode = 'work'; // 'work' 或 'break'
 
         // 初始化
-        function init() {
-            loadData();
+        async function init() {
+            await loadData();
             updateDate();
             updateDashboard();
             renderHomework();
@@ -2098,13 +2158,64 @@
             updateSportsStats();
             renderChoreRecords();
             updateChoreStats();
+            updateSyncStatus();
+
+            // 每30秒更新一次同步状态显示
+            setInterval(updateSyncStatus, 30000);
+        }
+
+        // 从云端加载数据
+        async function loadFromCloud() {
+            try {
+                const { data: cloudData, error } = await supabaseClient
+                    .from('user_data')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .single();
+
+                if (error) {
+                    if (error.code === 'PGRST116') {
+                        // 没有找到数据，这是正常的（首次使用）
+                        console.log('云端暂无数据，使用本地数据');
+                        return null;
+                    }
+                    throw error;
+                }
+
+                if (cloudData && cloudData.data) {
+                    console.log('✅ 从云端加载数据成功');
+                    syncStatus.lastSync = new Date(cloudData.updated_at);
+                    return cloudData.data;
+                }
+
+                return null;
+            } catch (error) {
+                console.error('❌ 从云端加载数据失败:', error);
+                syncStatus.error = error.message;
+                return null;
+            }
         }
 
         // 加载数据
-        function loadData() {
-            const saved = localStorage.getItem('winterStudyData');
-            if (saved) {
-                data = JSON.parse(saved);
+        async function loadData() {
+            // 先尝试从云端加载
+            const cloudData = await loadFromCloud();
+
+            if (cloudData) {
+                // 使用云端数据
+                data = cloudData;
+                // 同时保存到本地作为备份
+                localStorage.setItem('winterStudyData', JSON.stringify(data));
+            } else {
+                // 云端没有数据，使用本地数据
+                const saved = localStorage.getItem('winterStudyData');
+                if (saved) {
+                    data = JSON.parse(saved);
+                }
+            }
+
+            // 以下是数据兼容性检查和初始化
+            if (data) {
                 // 确保番茄钟数据存在
                 if (!data.pomodoros) {
                     data.pomodoros = { today: 0, totalTime: 0, lastDate: null };
@@ -2231,9 +2342,160 @@
             }
         }
 
+        // 保存数据到云端
+        async function syncToCloud() {
+            if (syncStatus.syncing) return;
+
+            syncStatus.syncing = true;
+            syncStatus.error = null;
+
+            try {
+                const dataToSync = {
+                    user_id: userId,
+                    device_id: deviceId,
+                    data: data,
+                    updated_at: new Date().toISOString()
+                };
+
+                // 尝试更新现有记录，如果不存在则插入
+                const { data: existingData, error: fetchError } = await supabaseClient
+                    .from('user_data')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .single();
+
+                if (existingData) {
+                    // 更新现有记录
+                    const { error } = await supabaseClient
+                        .from('user_data')
+                        .update(dataToSync)
+                        .eq('user_id', userId);
+
+                    if (error) throw error;
+                } else {
+                    // 插入新记录
+                    const { error } = await supabaseClient
+                        .from('user_data')
+                        .insert([dataToSync]);
+
+                    if (error) throw error;
+                }
+
+                syncStatus.lastSync = new Date();
+                console.log('✅ 数据已同步到云端');
+            } catch (error) {
+                syncStatus.error = error.message;
+                console.error('❌ 云端同步失败:', error);
+            } finally {
+                syncStatus.syncing = false;
+            }
+        }
+
         // 保存数据
         function saveData() {
+            // 先保存到本地
             localStorage.setItem('winterStudyData', JSON.stringify(data));
+
+            // 异步同步到云端（不阻塞本地保存）
+            syncToCloud().then(() => {
+                updateSyncStatus();
+            }).catch(err => {
+                console.error('云端同步出错:', err);
+                updateSyncStatus();
+            });
+        }
+
+        // 更新同步状态显示
+        function updateSyncStatus() {
+            const statusEl = document.getElementById('syncStatus');
+            const iconEl = document.getElementById('syncIcon');
+            const textEl = document.getElementById('syncText');
+
+            if (!statusEl || !iconEl || !textEl) return;
+
+            statusEl.classList.remove('syncing', 'error');
+
+            if (syncStatus.syncing) {
+                statusEl.classList.add('syncing');
+                iconEl.textContent = '🔄';
+                iconEl.classList.add('sync-icon');
+                textEl.textContent = '同步中...';
+            } else if (syncStatus.error) {
+                statusEl.classList.add('error');
+                iconEl.textContent = '❌';
+                iconEl.classList.remove('sync-icon');
+                textEl.textContent = '同步失败';
+            } else if (syncStatus.lastSync) {
+                iconEl.textContent = '✅';
+                iconEl.classList.remove('sync-icon');
+                const now = new Date();
+                const diff = Math.floor((now - syncStatus.lastSync) / 1000);
+                if (diff < 60) {
+                    textEl.textContent = '刚刚同步';
+                } else if (diff < 3600) {
+                    textEl.textContent = `${Math.floor(diff / 60)}分钟前`;
+                } else {
+                    textEl.textContent = `${Math.floor(diff / 3600)}小时前`;
+                }
+            } else {
+                iconEl.textContent = '☁️';
+                iconEl.classList.remove('sync-icon');
+                textEl.textContent = '云端同步';
+            }
+        }
+
+        // 手动同步
+        async function manualSync() {
+            if (syncStatus.syncing) {
+                showToast('⏳ 正在同步中，请稍候...');
+                return;
+            }
+
+            updateSyncStatus();
+            showToast('🔄 开始同步数据...');
+
+            // 先从云端加载最新数据
+            const cloudData = await loadFromCloud();
+            if (cloudData) {
+                // 比较本地和云端数据的更新时间
+                const localUpdated = data.lastVisit || '';
+                const cloudUpdated = cloudData.lastVisit || '';
+
+                if (cloudUpdated > localUpdated) {
+                    // 云端数据更新，使用云端数据
+                    data = cloudData;
+                    localStorage.setItem('winterStudyData', JSON.stringify(data));
+
+                    // 刷新所有显示
+                    updateDashboard();
+                    renderHomework();
+                    renderBooks();
+                    renderPlans();
+                    updatePomodoroStats();
+                    updatePointsDisplay();
+                    renderPointsHistory();
+                    renderSchedule();
+                    renderCities();
+                    renderTestRecords();
+                    updateTestStats();
+                    renderSportsRecords();
+                    updateSportsStats();
+                    renderChoreRecords();
+                    updateChoreStats();
+
+                    showToast('✅ 已从云端同步最新数据');
+                } else {
+                    // 本地数据更新，上传到云端
+                    await syncToCloud();
+                    showToast('✅ 已将本地数据同步到云端');
+                }
+            } else {
+                // 云端没有数据，上传本地数据
+                await syncToCloud();
+                showToast('✅ 已将数据上传到云端');
+            }
+
+            updateSyncStatus();
         }
 
         // ==================== 数据导入/导出功能 ====================
@@ -2897,7 +3159,6 @@
         }
 
         function updatePointsDisplay() {
-            document.getElementById('headerPoints').textContent = data.points.total;
             document.getElementById('currentPoints').textContent = data.points.total;
         }
 
