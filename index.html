@@ -1908,22 +1908,16 @@
                     <button class="reward-btn" onclick="redeemReward('money', 100, 10)">立即兑换</button>
                 </div>
                 <div class="reward-card">
-                    <div class="reward-icon">🎮</div>
-                    <div class="reward-title">游戏时间 30分钟</div>
-                    <div class="reward-cost">50 积分</div>
-                    <button class="reward-btn" onclick="redeemReward('game', 50, 30)">立即兑换</button>
-                </div>
-                <div class="reward-card">
                     <div class="reward-icon">💵</div>
                     <div class="reward-title">零花钱 5元</div>
                     <div class="reward-cost">50 积分</div>
                     <button class="reward-btn" onclick="redeemReward('money', 50, 5)">立即兑换</button>
                 </div>
-                <div class="reward-card">
-                    <div class="reward-icon">🎯</div>
-                    <div class="reward-title">游戏时间 60分钟</div>
-                    <div class="reward-cost">100 积分</div>
-                    <button class="reward-btn" onclick="redeemReward('game', 100, 60)">立即兑换</button>
+                <div class="reward-card" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                    <div class="reward-icon">🎁</div>
+                    <div class="reward-title">自定义活动</div>
+                    <div class="reward-cost">自定义积分</div>
+                    <button class="reward-btn" onclick="redeemCustomActivity()">自定义兑换</button>
                 </div>
             </div>
 
@@ -2967,6 +2961,36 @@
                     saveData();
                     renderPointsHistory();
                     alert(`🎉 兑换成功！\n${reason}\n剩余积分: ${data.points.total}`);
+                }
+            }
+        }
+
+        // 自定义活动兑换
+        function redeemCustomActivity() {
+            const activityName = prompt('请输入想要兑换的活动名称：\n（例如：看电影、吃零食、买玩具等）');
+            if (!activityName || !activityName.trim()) {
+                return;
+            }
+
+            const pointsInput = prompt(`请输入兑换 "${activityName.trim()}" 需要的积分数：`);
+            const points = parseInt(pointsInput);
+
+            if (isNaN(points) || points <= 0) {
+                alert('请输入有效的积分数！');
+                return;
+            }
+
+            if (points > data.points.total) {
+                alert(`积分不足！\n\n当前积分：${data.points.total}\n需要积分：${points}\n还差：${points - data.points.total}`);
+                return;
+            }
+
+            const reason = `兑换: ${activityName.trim()}`;
+            if (confirm(`确定要兑换以下内容吗？\n\n活动：${activityName.trim()}\n消耗积分：${points}\n剩余积分：${data.points.total - points}`)) {
+                if (deductPoints(points, reason)) {
+                    saveData();
+                    renderPointsHistory();
+                    alert(`🎉 兑换成功！\n\n你已获得：${activityName.trim()}\n消耗积分：${points}\n剩余积分：${data.points.total}`);
                 }
             }
         }
