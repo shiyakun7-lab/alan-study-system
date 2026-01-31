@@ -1842,6 +1842,56 @@
                 <p style="color: #666; margin-top: 10px;">通过完成学习任务获得积分，兑换奖励！</p>
             </div>
 
+            <!-- 数据管理 -->
+            <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 15px; padding: 20px; margin-bottom: 30px;">
+                <h3 style="text-align: center; color: #333; margin-bottom: 15px;">💾 数据管理</h3>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="exportData()" style="
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 25px;
+                        font-size: 14px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        📤 导出数据
+                    </button>
+                    <button onclick="document.getElementById('importFile').click()" style="
+                        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 25px;
+                        font-size: 14px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        📥 导入数据
+                    </button>
+                    <button onclick="clearAllData()" style="
+                        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 25px;
+                        font-size: 14px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        🗑️ 清空数据
+                    </button>
+                </div>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                <p style="text-align: center; font-size: 12px; color: #666; margin-top: 10px;">
+                    💡 定期导出数据可以备份你的学习记录
+                </p>
+            </div>
+
             <h3 class="section-title">可兑换奖励</h3>
             <div class="rewards-grid">
                 <div class="reward-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; grid-column: span 2;">
@@ -2191,6 +2241,67 @@
         function saveData() {
             localStorage.setItem('winterStudyData', JSON.stringify(data));
         }
+
+        // ==================== 数据导入/导出功能 ====================
+
+        // 导出数据
+        function exportData() {
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+
+            const link = document.createElement('a');
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('zh-CN').replace(/\//g, '-');
+            link.href = url;
+            link.download = `alan-study-backup-${dateStr}.json`;
+            link.click();
+
+            URL.revokeObjectURL(url);
+            showToast('✅ 数据导出成功！');
+        }
+
+        // 导入数据
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+
+                    // 验证数据格式
+                    if (!importedData.points || !importedData.homework || !importedData.books) {
+                        throw new Error('数据格式不正确');
+                    }
+
+                    if (confirm('⚠️ 导入数据将覆盖当前所有数据，确定要继续吗？\n\n建议先导出当前数据作为备份！')) {
+                        data = importedData;
+                        saveData();
+                        init();
+                        showToast('✅ 数据导入成功！');
+                    }
+                } catch (error) {
+                    alert('❌ 导入失败：' + error.message + '\n\n请确保选择的是正确的备份文件！');
+                }
+                // 清空input，允许重复选择同一文件
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // 清空所有数据
+        function clearAllData() {
+            if (confirm('⚠️ 确定要清空所有数据吗？\n\n此操作不可恢复！建议先导出数据备份！')) {
+                if (confirm('⚠️ 再次确认：真的要删除所有学习记录吗？')) {
+                    localStorage.removeItem('winterStudyData');
+                    location.reload();
+                }
+            }
+        }
+
+        // ==================== 数据导入/导出功能结束 ====================
 
         // 更新日期显示
         function updateDate() {
